@@ -47,7 +47,7 @@ class CrossSection:
       return self.totalxs / maxE
  
     def cosThetaLab(self,Ex,Er):
-      return math.sqrt(0.5 * Er / self.MaxEr(Ex) )
+      return np.sqrt(0.5 * Er / self.MaxEr(Ex) )
 
     def ErLab(self,Ex,cosTh):
       return 2 * self.MaxEr(Ex) * cosTh * cosTh
@@ -62,4 +62,4 @@ class CrossSection:
       return 0.5*self.MaxEr(Ex) * (1+cosTh)   
 
     def cosThetaFromCosThetaCM(self,cosTh):
-      return 0.5 * math.sqrt( 1 + cosTh)
+      return 0.5 * np.sqrt( 1 + cosTh)

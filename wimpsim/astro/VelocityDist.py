@@ -23,18 +23,18 @@ class VelocityDist:
     def __init__(self):
       self.v0 = 220 * units.km / units.sec
       self.vesc = 550 * units.km / units.sec
-      self.vE = 220 * units.km / units.sec
+      self.vE = 220 * units.km / units.sec * np.array([0,0,1])
       self.norm = 1.0 / (np.pi * self.v0*self.v0)**1.5
       self.max_iter = 1000000 # Gets ~0.01% error for fairly standard assumptions
       self.tol_norm = 0.001
 
     def set_params(self,pars):
       if 'v0' in pars.keys():
-        self.v0 = keys['v0']
+        self.v0 = pars['v0']
       if 'vE' in pars.keys():
-        self.vE = keys['vE']
+        self.vE = pars['vE']
       if 'vesc' in pars.keys():
-        self.vesc = keys['vesc']
+        self.vesc = pars['vesc']
       self.norm = 1.0 / (np.pi * self.v0*self.v0)**1.5
       
 
@@ -45,7 +45,7 @@ class VelocityDist:
         return 0
       return self.norm * np.exp( - v2 / (self.v0*self.v0))
 
-    def normalize(self,calcErr=True):
+    def normalize(self,calcErr=False):
         """ Monte Carlo integration of f(v) """
         # First define the limits to integrate over
         # This is non-optimal, but let's just get a rectangular region
@@ -54,7 +54,8 @@ class VelocityDist:
         fave = 0
 
         while niter < self.max_iter:
-
+            if niter%(self.max_iter/10) == 0:
+                print("Normalization: %0.1f%% done"%(100 * (niter / (self.max_iter)) ,))
             vec = np.random.normal(-self.vE,self.v0/np.sqrt(2),3)
             vec2 = vec + self.vE
             vec_prob = 1./(np.pi*self.v0*self.v0)**1.5 * \

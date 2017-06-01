@@ -2,7 +2,7 @@ import numpy as np
 
 def get_axes(v):
 
-     e1 = vE
+     e1 = v
      if e1.dot(e1) < 1e-8:
          e1 = np.array([0,0,1])
 

@@ -1,25 +1,26 @@
 import numpy as np
 from .sample import Sample
-
+from .. import mathtools
+from .. import units
 class MaxwellWeightedSampler:
     def __init__(self,astro_model,int_model):
-        self.astro = astro_model
+        self.astro_model = astro_model
         self.interaction = int_model
 
-    def initialize():
-        self.vE = self.astro.vE()
-        self.v0 = self.astro.v0()
-        self.vesc = astro.vesc()
+    def initialize(self):
+        self.vE = self.astro_model.vE()
+        self.v0 = self.astro_model.v0()
+        self.vesc = self.astro_model.vesc()
         self.Mx = self.interaction.Mx()
         self.Mt = self.interaction.Mt()
         self.xs = self.interaction.total_xs()
         self.mu = self.Mx*self.Mt / (self.Mx+self.Mt)
         self.Mtot = self.interaction.Mtot()
-        self.rho = self.astro.wimp_density()
-        self.e1,self.e2,self.e3 = wsmath.get_axes(self.vE)
+        self.rho = self.astro_model.wimp_density()
+        self.e1,self.e2,self.e3 = mathtools.get_axes(self.vE)
         self.vE_mag = np.sqrt(self.vE.dot(self.vE))
 
-    def sample():
+    def sample(self):
 
 
         vec = np.random.normal(-self.vE,self.v0/np.sqrt(2),3)
@@ -32,15 +33,15 @@ class MaxwellWeightedSampler:
         vec_mag = np.sqrt(vec.dot(vec))
         # The factor of 1./vec_mag comes from v from the flux and 1/v^2
         # from the recoil energy normalization
-        weight = self.astro.velocity.f(vec) / vec_mag / vec_prob
+        weight = self.astro_model.velocity.f(vec) / vec_mag / vec_prob
 
         ## Now let's look at the interaction part
-        Ex = 0.5 * self.Mx * (vec/units.speed_of_light)**2
-        Emax = self.interaction.cross_section.Emax(Ex)
+        Ex = 0.5 * self.Mx * (vec_mag/units.speed_of_light)**2
+        Emax = self.interaction.cross_section.MaxEr(Ex)
 
         E = np.random.rand() * Emax
         phi = np.random.rand() * 2 * np.pi
-        cosTheta = self.interaction.cross_section.cosTheta(E)
+        cosTheta = self.interaction.cross_section.cosThetaLab(Ex,E)
 
         ## Add in the form factor
         Q2 = 2 * self.Mt * E
@@ -50,7 +51,7 @@ class MaxwellWeightedSampler:
         weight = weight * self.xs * self.rho * self.Mtot / (2 * self.mu*self.mu * self.Mx) * Emax
 
         ## Let's go back into the lab frame:
-        e1v,e2v,e3v = wsmath.get_axes(vec)
+        e1v,e2v,e3v = mathtools.get_axes(vec)
         recoil_lab = e1v * cosTheta + \
                      np.sqrt(1-cosTheta*cosTheta) * \
                      ( np.cos(phi) * e2v + np.sin(phi) * e3v )
