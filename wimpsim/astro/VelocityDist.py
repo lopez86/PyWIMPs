@@ -1,5 +1,5 @@
 import numpy as np
-import wimpsim.Units as units
+from .. import units
 
 class VelocityDist:
     """ This is the base velocity distribution class.

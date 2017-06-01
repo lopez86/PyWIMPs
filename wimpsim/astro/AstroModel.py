@@ -1,5 +1,5 @@
-import wimpsim.astro.VelocityDist
-import wimpsim.Units as units
+from . import VelocityDist
+from .. import units
 
 class AstroModel:
 
@@ -33,8 +33,8 @@ class AstroModel:
     def v0(self):
         return self._v0
 
-    def vesc(self)
+    def vesc(self):
         return self._vesc
 
-    def velocity(self)
+    def velocity(self):
         return self._velocity

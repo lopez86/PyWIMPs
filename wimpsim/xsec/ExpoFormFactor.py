@@ -1,4 +1,4 @@
-import wimpsim.xsec.FormFactor as FormFactor
+from .FormFactor import FormFactor
 import numpy as np
 
 class ExpoFormFactor(FormFactor):

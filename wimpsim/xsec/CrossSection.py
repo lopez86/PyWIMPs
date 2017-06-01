@@ -1,7 +1,7 @@
 import numpy as np
-import wimpsim.Units as units
+from .. import units
 
-class CrossSection
+class CrossSection:
     """
     This is the base class for a cross section from a fundamental
     interaction.

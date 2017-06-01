@@ -1,5 +1,5 @@
-import wimpsim.xsec.FormFactor as FormFactor
-import wimpsim.Units as units
+from .FormFactor import FormFactor
+from .. import units
 
 class DipoleFormFactor(FormFactor):
     """
