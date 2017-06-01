@@ -10,6 +10,9 @@ class FormFactor:
         """Doesn't do anything for now."""
         pass
 
+    def set_params(self,pars):
+        pass
+
     def ff2(self,Q2):
         """
         Calculates the form factor at the given value of Q^2.

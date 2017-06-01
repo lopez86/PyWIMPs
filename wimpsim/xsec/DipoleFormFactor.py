@@ -1,4 +1,5 @@
-import FormFactor
+import wimpsim.xsec.FormFactor as FormFactor
+import wimpsim.Units as units
 
 class DipoleFormFactor(FormFactor):
     """
@@ -10,8 +11,12 @@ class DipoleFormFactor(FormFactor):
     and is associated with an exponential charge distribution.
 
     """
-    def  __init__(self,scale):
-        self.scale = scale
+    def  __init__(self):
+        self.scale = 1.0 * units.GeV
+
+    def set_params(self,pars):
+        if 'scale' in pars.keys:
+          self.scale = pars['scale']
 
     def ff2(self,Q2):
-      return (1 + Q2/(scale*scale))**-2
+        return (1 + Q2/(scale*scale))**-2

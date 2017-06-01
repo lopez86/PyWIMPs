@@ -1,4 +1,5 @@
-import math.pi
+import numpy as np
+import wimpsim.Units as units
 
 class CrossSection
     """
@@ -13,13 +14,21 @@ class CrossSection
 
     """
 
-    def __init__(self,Mt,Mx,xs=1):
-      self.totalxs = xs #Unit normalization is default
-      self.Mt = Mt
-      self.Mx = Mx
+    def __init__(self):
+      self.totalxs = 1 #Unit normalization is default
+      self.Mt = 100*units.GeV
+      self.Mx = 100*units.GeV
+
+    def set_params(self,pars):
+      if 'XS' in pars.keys():
+        self.totalxs = pars['XS']
+      if 'Mt' in pars.keys():
+        self.Mt = pars['Mt']
+      if 'Mx' in pars.keys():
+        self.Mx = pars['Mx']
 
     def dSdOmegaCM(self):
-      return self.totalxs / (4*pi)
+      return self.totalxs / (4*np.pi)
 
     def dSdcosThCM(self):
       return 0.5*self.totalxs
