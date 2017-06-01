@@ -1,13 +1,14 @@
 import wimpsim.astro.VelocityDist
+import wimpsim.Units as units
 
 class AstroModel:
 
     def __init__(self,rho):
         self._velocity = wimpsim.astro.VelocityDist()
-        self._wimp_density = 0.3 * GeV / (cm**2)
-        self._vE = 220 * km / sec
-        self._v0 = 230 * km / sec
-        self._vesc = 550 * km /sec 
+        self._wimp_density = 0.3 * units.GeV / (units.cm**2)
+        self._vE = 220 * units.km / units.sec
+        self._v0 = 230 * units.km / units.sec
+        self._vesc = 550 * units.km / units.sec 
         self.fill_params()
         
 

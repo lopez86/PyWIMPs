@@ -1,4 +1,5 @@
 import numpy as np
+import wimpsim.Units as units
 
 class VelocityDist:
     """ This is the base velocity distribution class.
@@ -19,10 +20,10 @@ class VelocityDist:
 
     """
 
-    def __init__(self,v0,vE,vesc):
-      self.v0 = 1.0*v0
-      self.vesc = 1.0*vesc
-      self.vE = 1.0*vE
+    def __init__(self):
+      self.v0 = 220 * units.km / units.sec
+      self.vesc = 550 * units.km / units.sec
+      self.vE = 220 * units.km / units.sec
       self.norm = 1.0 / (np.pi * self.v0*self.v0)**1.5
       self.max_iter = 1000000 # Gets ~0.01% error for fairly standard assumptions
       self.tol_norm = 0.001
