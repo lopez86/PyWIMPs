@@ -32,7 +32,8 @@ It is very likely that the following will eventually be needed:
    * Un-weighted event-by-event sampling
 
 ## Future Features
-
+ * Nucleus to nucleon normalization
+ * Data for common nuclei
  * Implementation of some basic limit-setting
    * Background-free counting
    * Feldman-Cousins procedure
@@ -52,6 +53,6 @@ It is very likely that the following will eventually be needed:
    * Simplified parameterized simulation of a LUX or XENON type detector
    * Inelastic dark matter
    * Q^2-dependent cross sections
-   * Neutrino coherent elastic scattering
+   * Coherent neutrino elastic scattering
 
 

@@ -1,4 +1,5 @@
 
+hbarc = 197.327 # MeV-fm
 MeV = 1.
 GeV = 1000.
 keV = 0.001
