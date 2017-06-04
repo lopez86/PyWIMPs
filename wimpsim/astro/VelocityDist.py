@@ -45,6 +45,12 @@ class VelocityDist:
         return 0
       return self.norm * np.exp( - v2 / (self.v0*self.v0))
 
+    def f_no_escape(self,v):
+      v2 = v+self.vE
+      v2 = v2.dot(v2)
+      return self.norm * np.exp( - v2 / (self.v0*self.v0))
+
+
     def normalize(self,calcErr=False):
         """ Monte Carlo integration of f(v) """
         # First define the limits to integrate over

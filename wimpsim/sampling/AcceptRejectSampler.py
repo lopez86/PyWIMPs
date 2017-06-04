@@ -23,13 +23,16 @@ class AcceptRejectSampler:
 
         #Velocity that maximizes the Maxwell-Boltzmann distribution
         #Ignores any effects from the truncation
-        self.vmaxP =  -0.5 * (self.vE_mag + np.sqrt(self.vE_mag*self.vE_mag + self.v0*self.v0))
-        self.vmaxP_vec = self.vmaxP * self.vE / self.vE_mag
-        self.maxP = self.vmaxP * self.astro_model.velocity.f(self.vmaxP_vec)
+        #self.vmaxP =  0.5 * (self.vE_mag + np.sqrt(self.vE_mag*self.vE_mag + 2*self.v0*self.v0))
+        self.vmaxP =  0.5 * (self.vE_mag + np.sqrt(self.vE_mag*self.vE_mag + 6*self.v0*self.v0))
+        self.vmaxP_vec = -self.vmaxP * self.vE / self.vE_mag
+        #self.maxP = self.vmaxP * self.astro_model.velocity.f_no_escape(self.vmaxP_vec)
+        self.maxP = self.vmaxP**3 * self.astro_model.velocity.f_no_escape(self.vmaxP_vec)
         # Maximum possible WIMP velocity
         self.vmax = self.vesc + self.vE_mag
         # Minimum possible WIMP velocity
         self.vmin = -min(self.vesc - self.vE_mag,0)
+
 
     def sample(self):
 
@@ -47,9 +50,9 @@ class AcceptRejectSampler:
             # First, throw a velocity:
             v = np.random.rand() * (self.vmax-self.vmin) + self.vmin
             cosTh = 2 * np.random.rand() - 1
-            phi = np.random.rand() * 2*pi
+            phi = np.random.rand() * 2*np.pi
             sinTh = np.sqrt(1-cosTh*cosTh)
-            vec = np.array([v*sinTh*cos(phi),v*sinTh,sin(phi),v*cosTh])
+            vec = np.array([v*sinTh*np.cos(phi),v*sinTh*np.sin(phi),v*cosTh])
             vec_mag = np.sqrt(vec.dot(vec))
             Ex = 0.5 * self.Mx * (vec_mag/units.speed_of_light)**2
             Emax = self.interaction.cross_section.MaxEr(Ex)
@@ -61,9 +64,10 @@ class AcceptRejectSampler:
             rnd = np.random.rand() * self.maxP
 
             # Calculate the probability:
-            P = vec_mag * self.astro_model.velocity.f(vec) * \
+            P = vec_mag**3 * self.astro_model.velocity.f(vec) * \
                 self.interaction.form_factor.ff2(Q2)
-
+            if P > self.maxP: 
+              print( 'Illegal P found: ' +str(P/self.maxP))
             # Compare:
             if P > rnd:
               break
@@ -80,5 +84,5 @@ class AcceptRejectSampler:
                      np.sqrt(1-cosTheta*cosTheta) * \
                      ( np.cos(phi) * e2v + np.sin(phi) * e3v )
 
-        return Sample(E,recoil_lab,1,vec)
+        return Sample(Er,recoil_lab,1,vec)
 
