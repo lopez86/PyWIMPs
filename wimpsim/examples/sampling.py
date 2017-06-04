@@ -5,10 +5,10 @@ from ROOT import TF1
 
 from ..astro import AstroModel
 from ..xsec import InteractionModel
-from ..sampling import UniformWeightedSampler
-from ..sampling import MaxwellWeightedSampler
-from ..sampling import AcceptRejectSampler
-from ..sampling import MCMCSampler
+from ..mc import UniformWeightedSampler
+from ..mc import MaxwellWeightedSampler
+from ..mc import AcceptRejectSampler
+from ..mc import MCMCSampler
 from .. import units
 
 import numpy as np
