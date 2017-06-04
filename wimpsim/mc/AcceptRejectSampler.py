@@ -45,7 +45,7 @@ class AcceptRejectSampler:
         while passed is False:
 
             if (iteration >= self.max_iter):
-                print("Accept/Reject: Max iteraction reached")
+                print("Accept/Reject: Max iteration reached")
                 return(-1,np.array([0,0,0]),0)
             # First, throw a velocity:
             v = np.random.rand() * (self.vmax-self.vmin) + self.vmin

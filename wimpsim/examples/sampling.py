@@ -18,9 +18,6 @@ def CompareMethods():
     h2 = TH1F('maxw','Maxwell;E_{r} [keV];Rate [shape only]',100,0,200)
     h3 = TH1F('ar','A/R;E_{r} [keV];Rate [shape only]',100,0,200)
    
-
-
-
     h1.Sumw2()
     h2.Sumw2()
     h3.Sumw2()
