@@ -14,10 +14,13 @@ So far, the following dependencies are needed:
  * NumPy - numerical calculations
  * AstroPy - astrophysics libraries (coordinate transforms)
 
+For the examples, you will also need (depending on the specific example):
+ * Matplotlib
+ * PyROOT (ROOT with Python bindings)
+
 It is very likely that the following will eventually be needed:
  
  * SciPy - more numerical tools
- * Matplotlib - Matlab-like plotting in python
  * Basemap - extra map plotting tools for Matplotlib
 
 
@@ -27,9 +30,9 @@ It is very likely that the following will eventually be needed:
    * Standard Halo Model: Truncated Maxwellian velocity distribution
    * Isotropic cross section
    * Several basic form factors
- * Monte Carlo simulation of recoils given some basic properties
-   * Weighted sampling for building histograms and distributions, calculating weights, etc.
-   * Un-weighted event-by-event sampling
+ * Monte Carlo simulation of recoils using the standard halo and cross section assumptions
+   * Weighted sampling for building histograms and distributions, calculating weights, etc. (one throwing uniformly over a region and another drawing from a Maxwell-Boltzmann distribution)
+   * Un-weighted event-by-event sampling using (1) a basic rejection sampling method and (2) a Markov Chain Monte Carlo (MCMC) using the Metropolis-Hastings algorithm.
 
 ## Future Features
  * Nucleus to nucleon normalization
@@ -38,18 +41,17 @@ It is very likely that the following will eventually be needed:
    * Background-free counting
    * Feldman-Cousins procedure
    * Maximum Gap (Yellen)
-   * Annual modulation?
+   * Annual modulation limits
  * Detector effects
    * Efficiency curves
    * Reconstruction effects (smearing of reconstructed properties)
- * Plotting tools
+ * Examples of various plots and calculations
    * Recoil distribution skymaps
    * Sidereal modulation skymaps
    * Recoil energy distributions
    * Annual modulation rate
  * References and readings on dark matter
  * Maybe/Might be fun
-   * More sampling methods (MCMC?)
    * Simplified parameterized simulation of a LUX or XENON type detector
    * Inelastic dark matter
    * Q^2-dependent cross sections

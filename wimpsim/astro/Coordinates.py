@@ -41,6 +41,16 @@ class Coordinates:
         Get the motion of Earth in galactic coordinates 
         A datetime object is needed in order to get the position
         around the sun
+
+
+        Args:
+            timestamp (datetime): The timestamp at which we want to do
+                the calculation
+
+        Returns:
+            NumPy array of length 3. The velocity of Earth in galactic
+            coordinates.
+
         """
         timedelta = dt.datetime.fromtimestamp(timestamp) - self.J2000
         days = timedelta.total_seconds() / 86400.
@@ -64,6 +74,18 @@ class Coordinates:
         position. It then adds a small correction from the 
         rotation of Earth. There will be a very slight 
         sidereal modulation of the velocity.
+
+        Args:
+            timestamp (datetime): The time at which we want to
+                calculate the velocity
+            coord (list or array): The coordinates on Earth at 
+                which we want to do the calculation. Of the 
+                form [lat,lon].
+
+        Returns:
+            NumPy array of length 3. The velocity of the lab frame
+            at the given time and place.
+
         """
         lat,lon = coord
         loc = ascoords.EarthLocation(lon=lon*u.deg,lat=lat*u.deg)
