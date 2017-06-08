@@ -1,0 +1,149 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\title{Dark Matter Physics}
+\author{Jeremy P. Lopez \\ University of Colorado}
+\date{1 June 2017}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This note will describe the models used in this package
+to make calculations of WIMP-nucleus scattering in a
+dark matter direct detection experiment.
+
+This is still incomplete.
+\end{abstract}
+\tableofcontents
+\section{Introduction}
+
+If you follow science news, you may have heard of 
+experiments such as LUX, XENON, and CDMS.
+If you are a physicist or astrophysicist you may
+have heard of many more experiments such as 
+CoGENT, DAMA/LIBRA, PICO, LZ, and more.
+These are all in a particular class of experiment --
+dark matter direct detection searches.
+
+The idea of these experiments is this:
+\begin{enumerate}
+  \item The mass of the Milky Way is dominated by a diffuse halo of dark matter. Near us, we expect a density of something like 0.3~GeV / cm$^3$ (something like a proton mass every few cc). To us, the dark matter particles have some particular velocity distribution.
+  \item Astrophysical and cosmological models suggest that the dark matter is likely cold (non-relativistic) and could be from an as-yet-undiscovered particle. If so, a roughly weak-scale mass and weak-scale cross section gives the correct relic density of dark matter that is produced from thermal processes and freeze-out in the early universe. These particles are known as WIMPs, or weakly-interacting massive particles.
+  \item We can then try to build detectors to find WIMPs. They'll probably interact with nuclei, so we can design an experiment to look for recoiling nuclei created when a WIMP scatters off a nucleus inside the detector.
+  \item With weak-scale masses and cross sections, a detector of order 1 ton running for a year could have a chance at measuring some of these recoils. The difficulty is in reducing background events to basically nothing and also measuring recoils in as wide a range of energies as possible but focusing on recoil energies of order 10 keV.
+\end{enumerate}
+
+\section{Astrophysics}
+
+Direct detection experiments seek to measure dark matter particles in the dark matter halo, so the astrophysics of dark matter haloes in galaxies is important to understand if we want to predict what an experiment should see.
+The standard halo model used in much of the literature is a basic Maxwell-Boltzmann WIMP velocity distribution.
+It is thought that the dark matter halo should not be revolving around the galaxy with our solar system, so 
+we expect to see a mean WIMP velocity of several hundred kilometers per second in the lab frame. Furthermore, particles that are too fast will just escape the galaxy altogether, so we model this by truncating the velocity distribution at some escape velocity. This truncation is symmetric in galactic coordinates (i.e. removing the velocity of Earth through the dark matter halo). So, we get a distribution like this:
+
+\begin{equation}
+f(\mathbf{v}) = \left\{\begin{array}{l} \frac{A}{(\pi v_0^2)^{3/2}}e^{-|\mathbf{v}+\mathbf{v_E}|^2/v_0^2},\ |\mathbf{v}+\mathbf{v_E}|<v_{esc}\\ 0\textrm{, otherwise} \end{array} \right.
+\end{equation}
+
+\section{Scattering}
+
+At low energies, we typically expect that the WIMP should scatter elastically off of a nucleus. 
+Furthermore, we also might expect that the cross section would be approximately constant with
+respect to WIMP energy and will be isotropic in the lab frame.
+
+That is,
+\begin{equation}
+\frac{d\sigma}{d\Omega_{cm}} = \frac{\sigma_0}{4\pi}.
+\end{equation}
+
+However, this is the formula for scattering in the center of mass frame with a point-like target. To
+get a quantity more relevant to the experiment, we boost to the lab frame. If you calculate this 
+correctly, you will see that you can derive relationships between the WIMP energy or velocity magnitude
+and the recoil kinematics. Some of these relationships are:
+
+\begin{eqnarray}
+\cos\theta_{cm} &=& 4 \cos^2\theta - 1 \\
+\cos\theta &=& \frac{1}{2}\sqrt{1+\cos\theta_{cm}} \\
+E_r &=& 2 \frac{m_N m_\chi}{(m_N+m_\chi)^2}E_\chi(1+\cos\theta_{cm}) \\
+E_r &=& \frac{m_N m_\chi^2}{(m_N+m_\chi)^2}v^2(1+\cos\theta_{cm}) \\
+E_{r,max} &=& 2\frac{m_N m_\chi^2}{(m_N+m_\chi)^2}v^2 \\
+v_{min} &=& \sqrt{\frac{(m_N + m_\chi)^2}{2m_Nm_\chi^2}} \\
+E_{r} &=& \frac{E_{r,max}}{2}(1+\cos\theta_{cm}) = 2E_{r,max}\cos^2\theta
+\end{eqnarray}
+
+Converting our differential cross section into the lab frame,
+\begin{equation}
+\frac{d\sigma}{dE_r } = \frac{\sigma_0}{E_{r,max}},
+\end{equation}
+where $E_r \in [0,E_{r,max}]$.
+
+This is still incomplete. We haven't added any term for the fact that our nucleus is a three-dimensional
+object. We do this by adding in a form factor, which is basically the Fourier transform of the 
+charge distribution of the nucleus. Now, we can write the correct differential cross section:
+
+\begin{equation}
+\frac{d\sigma_{total}}{dE_r} = \frac{\sigma_0}{E_{r,max}} | F(Q^2) |^2
+\end{equation}
+where $F(Q^2)$ is the form factor and for elastic scattering, $Q^2 = 2m_N E_r$.
+
+\subsection{Alternative Models}
+
+One simple alternative model to this is inelastic dark matter.
+Rather than elastic scattering, we consider the process:
+\begin{equation}
+N + \chi \longrightarrow N + \chi'
+\end{equation}
+where $\chi'$ is a second type of WIMP with a mass splitting of $\delta = m_{\chi'} - m_\chi$ that
+is typically going to be only a small fraction of the total mass.
+This has several implications:
+\begin{itemize}
+\item There is a non-zero minimum WIMP velocity for this interaction to happen.
+\item There is a minimum recoil energy at which this might be seen.
+\item The differential cross section is still constant with respect to $E_r$.
+\item The equations all need to change slightly.
+\end{itemize}
+
+If the cross section remains isotropic and constant with respect to energy, it now has to be:
+\begin{equation}
+\frac{d\sigma_{total}}{dE_r} = \frac{\sigma_0}{E_{r,max}-E_{r,min}} | F(Q^2) |^2
+\end{equation}
+
+\section{Rate Calculations}
+
+If you know how cross sections work, it's pretty easy to show that the rate of scattering
+off of a mass $M$ with a nucleus of mass $m_N$ in a dark matter halo of density $\rho$ is
+
+\begin{equation}
+\frac{dR}{dE_r d^3\mathbf{v}} = \frac{M}{m_N}\frac{\rho}{m_\chi}\frac{d\sigma}{dE_r}|F(2m_N E_r)|^2 vf(\mathbf{v}).
+\end{equation}
+
+You see several important terms here, including the cross section, the velocity distribution, the number of target nuclei and the density of dark matter nuclei. The extra factor of the velocity $v$ is a flux factor due to the fact that we are flying through a dark matter frame. The differential cross section is also a function of $v$.
+
+The total rate, then is:
+\begin{equation}
+R = \frac{M}{m_N}\frac{\rho}{m_\chi} \int\limits_0^\infty dE_r \int\limits_{|\mathbf{v}|>v_{min}} d^3\mathbf{v} \frac{d\sigma}{dE_r}|F(2m_N E_r)|^2 vf(\mathbf{v}).
+\end{equation}
+
+and the energy spectrum is:
+\begin{equation}
+\frac{dR}{dE_r} = \frac{M}{m_N}\frac{\rho}{m_\chi} \int\limits_{|\mathbf{v}|>v_{min}} d^3\mathbf{v}  \frac{d\sigma}{dE_r}|F(2m_N E_r)|^2 vf(\mathbf{v}).
+\end{equation}
+In our standard elastic scattering model, recall that $E_{r,max}\propto v^2$, so
+\begin{equation}
+\frac{dR}{dE_r} \propto \int\limits_{|\mathbf{v}|>v_{min}} \frac{d^3\mathbf{v}}{v}  |F(2m_N E_r)|^2 f(\mathbf{v}).
+\end{equation}
+
+But, our detector can't measure everything, so we must add terms for the efficiency $\varepsilon$ and the detector response $g$. These are purely functions of recoil kinematics $\mathbf{v}_r = (E_r, \theta(\mathbf{v},E_r),\phi(\mathbf{v},E_r)$, but typically just the energy \footnote{You could also make these functions of position and time, but I will not consider that case here. It would be pretty trivial to include that as well but it adds complications and it would probably be best to already have those averaged out.}. Putting these in, we get a nice equation from which we can get the actual distributions measured by the detector:
+\begin{equation}
+\frac{dR}{dE_r^{meas} d\Omega_{meas}} =\int\limits_0^\infty dE_r \int\limits_{|\mathbf{v}|>v_{min}} d^3\mathbf{v}  \varepsilon(\mathbf{v}_r)g(\mathbf{v}_r^{meas},\mathbf{v}_r)\frac{dR}{dE_r d^3\mathbf{v}}
+\end{equation}
+
+It is best to leave the equation in this form. This is almost fully generic and is going to be the equation from which we try to draw samples. Also note that the relevant quantities that we want to know in a direct detection experiment are $m_\chi$, the WIMP mass, and $\sigma_0$, the cross section at zero momentum transfer. Everything else is nuclear physics or the astrophysics of dark matter haloes.
+
+We can also account for time variation by time-averaging the rates over the run time. You can make everything here also dependent on time to get some rate $R(t)$ and then:
+\begin{equation}
+\langle R \rangle_t = \frac{\int\limits_{\rm start}^{\rm end} dt R(t) T(t) }{\int\limits_{\rm start}^{\rm end} dt T(t)}
+\end{equation}
+where $T(t)$ is a function giving the time periods with good physics data. If enough events are ever seen, measuring this time variation will be an important way to help confirm that a proposed signal is in fact from dark matter.
+\end{document}

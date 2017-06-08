@@ -99,3 +99,8 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# Latex documentation
+docs/*.aux
+docs/*.toc
+docs/*.log
