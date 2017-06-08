@@ -68,7 +68,7 @@ def upper_limit(N_exp=0,CL=0.9):
         # Bayesian with flat prior
         # The limit in number of events
         n_limit = -np.log(1 - CL) 
-        return n_limit, CL
+        return n_limit
 
     # We actually measured some events
     err = 2
@@ -78,22 +78,22 @@ def upper_limit(N_exp=0,CL=0.9):
     while err > UpperLimitBkgFree._tol:
         fn = ( CL - 1)
         dfdn = 0
-
         for i in range(N_exp+1): # Should the +1 be here?
-            pmf = scipy.stats.poisson.pmf(N_exp,n_limit)
+            pmf = scipy.stats.poisson.pmf(i,n_limit)
             fn = fn + pmf 
-            dfdn = dfdn + (-1 + N_exp / n_limit) * pmf
-            if dfdn==0:
-                dfdn = UpperLimitBkgFree._tol
+            dfdn = dfdn + (-1 + i / n_limit) * pmf
         ## Newton's method
-    
+        
+
+        #dfdn = np.sign(dfdn) * np.max([np.abs(dfdn),0.01])
         n_limit = n_limit - fn / dfdn
         if n_limit <= 0:
             print('Error: Mean has fallen below 0')
             print(n_limit,fn,dfdn,fn/dfdn)
             return 0
         err = np.max( np.abs(fn )) / (1-CL)
-    
+        if np.abs( 1 - fn_last[2]/fn ) < (UpperLimitBkgFree._tol)**2 :
+            n_limit = n_limit + UpperLimitBkgFree._tol
         fn_last[0] = fn_last[1]
         fn_last[1] = fn_last[2]
         fn_last[2] = fn
