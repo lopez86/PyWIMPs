@@ -15,8 +15,8 @@ class DipoleFormFactor(FormFactor):
         self.scale = 1.0 * units.GeV
 
     def set_params(self,pars):
-        if 'scale' in pars.keys:
-          self.scale = pars['scale']
+        if 'DipoleFFScale' in pars.keys:
+          self.scale = pars['DipoleFFScale']
 
     def ff2(self,Q2):
         return (1 + Q2/(scale*scale))**-2

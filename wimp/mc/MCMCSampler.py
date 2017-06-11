@@ -11,11 +11,14 @@ class MCMCSampler:
         self.sigma = 20 * units.km / units.sec
         self.nburnin = 1000
         self.Ntries = 0
-    def set_params(self,pars):
-        if 'sigma' in pars.keys():
-            self.sigma = pars['sigma']
-        if 'nburnin' in pars.keys():
-            self.nburnin = pars['nburnin']
+    def set_params(self,pars,set_models=False):
+        if 'MCMCSigma' in pars.keys():
+            self.sigma = pars['MCMCSigma']
+        if 'MCMCNburnin' in pars.keys():
+            self.nburnin = pars['MCMCnburnin']
+        if set_models:
+            self.astro_model.set_params(pars)
+            self.interaction.set_params(pars)
 
     def initialize(self):
         self.vE = self.astro_model.vE()

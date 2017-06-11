@@ -3,3 +3,7 @@ from .CrossSection import CrossSection
 from .InteractionModel import InteractionModel
 from .DipoleFormFactor import DipoleFormFactor
 from .ExpoFormFactor import ExpoFormFactor
+from .HelmFormFactor import HelmFormFactor
+from .EngelFormFactor import EngelFormFactor
+from .SolidSphereFormFactor import SolidSphereFormFactor
+from .ThinShellFormFactor import ThinShellFormFactor

@@ -8,6 +8,13 @@ class AcceptRejectSampler:
         self.interaction = int_model
         self.max_iter = 10000
 
+    def set_params(self,pars,set_models=False):
+        if 'AccRejMaxIter' in pars.keys():
+            pars.max_iter = pars['AccRejMaxIter']
+        if set_models:
+           self.astro_model.set_params(pars)
+           self.interaction.set_params(pars)
+
     def initialize(self):
         self.vE = self.astro_model.vE()
         self.v0 = self.astro_model.v0()
@@ -25,7 +32,11 @@ class AcceptRejectSampler:
         #Ignores any effects from the truncation
         #self.vmaxP =  0.5 * (self.vE_mag + np.sqrt(self.vE_mag*self.vE_mag + 2*self.v0*self.v0))
         self.vmaxP =  0.5 * (self.vE_mag + np.sqrt(self.vE_mag*self.vE_mag + 6*self.v0*self.v0))
-        self.vmaxP_vec = -self.vmaxP * self.vE / self.vE_mag
+
+        if self.vE_mag<1e-12:
+            self.vmaxP_vec = -self.vmaxP * np.array([0,0,1])
+        else:
+            self.vmaxP_vec = -self.vmaxP * self.vE / self.vE_mag
         #self.maxP = self.vmaxP * self.astro_model.velocity.f_no_escape(self.vmaxP_vec)
         self.maxP = self.vmaxP**3 * self.astro_model.velocity.f_no_escape(self.vmaxP_vec)
         # Maximum possible WIMP velocity

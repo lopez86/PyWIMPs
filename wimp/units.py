@@ -1,5 +1,4 @@
-
-hbarc = 197.327 # MeV-fm
+import numpy as np
 MeV = 1.
 GeV = 1000.
 keV = 0.001
@@ -8,7 +7,9 @@ gram = 0.001*kg
 tonne = 1000*kg
 eV = 1e-6
 TeV = 1e6
+amu = 931.5 * MeV
 cm = 1
+fm = 1e-13
 meter = 100
 km = 1e5
 sec = 1
@@ -18,3 +19,5 @@ day = 86400 * sec
 week = 7 * day
 year = 365.25 * day
 speed_of_light = 299792458 * meter / sec
+hbarc = 197.327 * MeV * fm  # MeV-fm
+deg = np.pi / 180.0

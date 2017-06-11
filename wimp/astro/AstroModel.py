@@ -3,15 +3,15 @@ from .. import units
 import numpy as np
 class AstroModel:
 
-    def __init__(self):
+    def __init__(self,norm=False):
         self.velocity = VelocityDist()
-        self.velocity.normalize()
-        self._wimp_density = 0.3 * units.GeV / (units.cm**2)
+        self._wimp_density = 0.3 * units.GeV / (units.cm**3)
         self._vE = 220 * units.km / units.sec * np.array([0,0,1])
-        self._v0 = 230 * units.km / units.sec
+        self._v0 = 220 * units.km / units.sec
         self._vesc = 550 * units.km / units.sec 
         self.fill_params()
-        
+        if norm:
+            self.velocity.normalize()        
 
     def fill_params(self):
         pars = {'rhox':self._wimp_density,'vE':self._vE,'v0':self._v0,'vesc':self._vesc}
@@ -27,6 +27,7 @@ class AstroModel:
         if 'rhox' in pars.keys():
             self._wimp_density = pars['rhox']
         self.velocity.set_params(pars)
+        
 
     def vE(self):
         return self._vE

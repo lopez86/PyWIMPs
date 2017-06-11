@@ -27,7 +27,7 @@ class VelocityDist:
         self.norm = 1.0 / (np.pi * self.v0*self.v0)**1.5
         self.max_iter = 1000000 # Gets ~0.01% error for fairly standard assumptions
         self.tol_norm = 0.001
-
+        self.needs_norm = True
     def set_params(self,pars):
         """
         Set the parameters for the velocity model.
@@ -38,14 +38,23 @@ class VelocityDist:
             'vE' (array(3)) velocity of lab frame through DM halo
             'vesc' galactic escape velocity
         """
+        # renormalize:
+        renorm = False
         if 'v0' in pars.keys():
             self.v0 = pars['v0']
+            renorm = True
         if 'vE' in pars.keys():
             self.vE = pars['vE']
         if 'vesc' in pars.keys():
-            self.vesc = pars['vesc']
-        self.norm = 1.0 / (np.pi * self.v0*self.v0)**1.5
-      
+            self.vesc = pars['vesc'] 
+            renorm = True
+        if 'VelTol' in pars.keys():
+            self.tol_norm = pars['VelTol']
+        if 'VelMaxIter' in pars.keys():
+            self.max_iter = pars['VelMaxIter']
+        if renorm:
+            self.norm = 1.0 / (np.pi * self.v0*self.v0)**1.5
+            self.needs_norm = True
 
     def f(self,v):
         """
@@ -58,6 +67,10 @@ class VelocityDist:
         Returns: 
             float: probability density
         """
+        if self.needs_norm:
+            self.needs_norm = False
+            self.normalize()
+
         v2 = v+self.vE
         v2 = v2.dot(v2)
         if v2 >= self.vesc*self.vesc:
@@ -75,63 +88,25 @@ class VelocityDist:
         Returns:
             float: probability density
         """
+        if self.needs_norm:
+            self.needs_norm = False
+            self.normalize()
         v2 = v+self.vE
         v2 = v2.dot(v2)
         return self.norm * np.exp( - v2 / (self.v0*self.v0))
 
 
-    def normalize(self,calcErr=False):
+    def normalize(self):
         """
-        Monte Carlo integration of f(v). Numerically calculates the
-        integral of f(v) and then renormalizes f(v) so that the 
-        integral is set to unity.
-
-        Args:
-            calcErr (bool): If True, calculate the approximate error
-
+        Calculates the normalization constant.
         """
+
         # First define the limits to integrate over
         # This is non-optimal, but let's just get a rectangular region
+        from math import erf
+
+        r = self.vesc / self.v0
+        a = np.pi * self.v0**3 * (np.sqrt(np.pi)*erf(r) - 2*r*np.exp(-r*r) )
+        self.norm = 1.0 / a
         
-        niter = 0
-        fave = 0
-
-        while niter < self.max_iter:
-            if niter%(self.max_iter/10) == 0:
-                print("Normalization: %0.1f%% done"%(100 * (niter / (self.max_iter)) ,))
-            vec = np.random.normal(-self.vE,self.v0/np.sqrt(2),3)
-            vec2 = vec + self.vE
-            vec_prob = 1./(np.pi*self.v0*self.v0)**1.5 * \
-                       np.exp( - (vec2.dot(vec2)) / (self.v0*self.v0) )
-            fval = self.f(vec) / vec_prob
-            
-
-            fave = fave + fval
-
-            niter = niter + 1
-        
-        fave = fave / niter
-
-
-       
-        if calcErr is True:
-            fvar = 0
-            niter = 0
-            while niter < self.max_iter:
-                vec = np.random.normal(-self.vE,self.v0/np.sqrt(2),3)
-                vec2 = vec + self.vE
-                vec_prob = 1./(np.pi*self.v0*self.v0)**1.5 * \
-                       np.exp( - (vec2.dot(vec2)) / (self.v0*self.v0) )
-            
-                fvar = fvar + (self.f(vec)/vec_prob-fave)**2
-                niter = niter + 1
-            fvar = fvar / (self.max_iter*(self.max_iter-1))
-            ferr = np.sqrt(fvar) / fave
-            print("Norm: %f Err: %f"%(fave,ferr))
-            print("Fractional normalization error is:")
-            print(ferr)
-            if ( ferr > self.tol_norm):
-                print(("This is above tolerance. Please increase the number of "
-                       "iterations"))
-
-        self.norm = self.norm / (fave)
+        self.needs_norm = False

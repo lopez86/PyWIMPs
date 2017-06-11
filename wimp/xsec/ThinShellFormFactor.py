@@ -5,18 +5,18 @@ class ThinShellFormFactor(FormFactor):
 
     def __init__(self):
         self.A = 1
-        self.a = 1.0 / units.hbarc
+        self.a = 1.0 * units.fm
         self.b = 0
         self.calculate_params()
 
 
     def set_params(self,pars):
-        if 'A' in pars.keys():
-            self.A = pars['A']
-        if 'a' in pars.keys():
-            self.a = pars['a']
-        if 'b' in pars.keys()
-            self.b = pars['b']
+        if 'AtomicNumber' in pars.keys():
+            self.A = pars['AtomicNumber']
+        if 'ThinShellFFA' in pars.keys():
+            self.a = pars['ThinShellFFA']
+        if 'ThinShellFFB' in pars.keys():
+            self.b = pars['ThinShellFFB']
         self.calculate_params()
 
     def calculate_params(self):
@@ -26,7 +26,7 @@ class ThinShellFormFactor(FormFactor):
 
 
     def ff2(self,Q2):
-        qrn = np.sqrt(Q2)*self.rn
+        qrn = np.sqrt(Q2)*self.rn / units.hbarc
          
         f = np.sin(qrn) / qrn
 

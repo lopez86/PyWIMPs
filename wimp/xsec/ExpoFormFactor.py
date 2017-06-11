@@ -13,8 +13,8 @@ class ExpoFormFactor(FormFactor):
         self.scale = 1.0 * units.GeV
 
     def set_params(self,pars):
-        if 'scale' in pars.keys():
-            self.scale = pars['scale']
+        if 'ExpoFFScale' in pars.keys():
+            self.scale = pars['ExpoFFScale']
 
     def ff2(self,Q2):
         return np.exp(-2 * Q2 / (scale * scale))    

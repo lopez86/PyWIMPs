@@ -1,4 +1,5 @@
 import numpy as np
+import datetime as dt
 import astropy.time as astime
 import astropy.coordinates as ascoords
 from astropy import units as u
@@ -52,13 +53,13 @@ class Coordinates:
             coordinates.
 
         """
-        timedelta = dt.datetime.fromtimestamp(timestamp) - self.J2000
+        timedelta = timestamp - self.J2000#dt.datetime.fromtimestamp(timestamp) - self.J2000
         days = timedelta.total_seconds() / 86400.
         L = self.lambdaL0 + self.lambdaL1 * days
         g = self.lambdag0 + self.lambdag1 * days
         lambda_t = L + self.lambdaB * np.sin(g) + self.lambdaC * np.sin(2*g)
-        uE_l = uEmean * (1 - self.ellipticity * np.sin(lambda_t - self.lambda0 ) )
-        uE = uEl * np.cos(self.beta) * np.sin(lambda_t - self.lambda_)
+        uE_l = self.uEmean * (1 - self.ellipticity * np.sin(lambda_t - self.lambda0 ) )
+        uE = uE_l * np.cos(self.beta) * np.sin(lambda_t - self.lambda_)
         return self.ur + self.us + uE
 
     def earth_motion_lab(self,timestamp,coord):
@@ -92,19 +93,19 @@ class Coordinates:
         time = astime.Time(timestamp) # A datetime
         earth_gal = self.earth_motion_gal(timestamp)
         earth_vel = np.sqrt(earth_gal.dot(earth_gal))
-        gal_lon = np.arctan2(earth_gal[2],earth_gal[1])
-        gal_lat = 0.5 * np.pi - np.arccos(earth_gal[3] / earth_vel)
+        gal_lon = np.arctan2(earth_gal[1],earth_gal[0])
+        gal_lat = 0.5 * np.pi - np.arccos(earth_gal[2] / earth_vel)
 
 
         gal = ascoords.Galactic(l = gal_lon * u.rad,b = gal_lat * u.rad)
-        gal_0 = SkyCoord(gal)
-        altaz = ascoords.altAz(obstime=time,location=loc,pressure=0)
+        gal_0 = ascoords.SkyCoord(gal)
+        altaz = ascoords.AltAz(obstime=time,location=loc,pressure=0)
         altaz_coords = gal_0.transform_to(altaz)
         
         # Let's let x = east, y = north, z = up
 
-        az = altaz_coords.data.lon.to(np.rad).value
-        alt = altaz_coords.data.lat.to(np.rad).value
+        az = altaz_coords.data.lon.to(u.rad).value
+        alt = altaz_coords.data.lat.to(u.rad).value
         v_earth = np.zeros(3)
         theta = 0.5 * np.pi - alt
         phi = 0.5 * np.pi - az
