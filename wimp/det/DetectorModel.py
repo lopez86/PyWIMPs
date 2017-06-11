@@ -7,10 +7,17 @@ class DetectorModel:
     def __init__(self):
         self.efficiency = Efficiency()
         self.response = Response()
+        self.rand = np.random
 
     def set_params(self,pars):
         self.efficiency.set_params(pars)
         self.response.set_params(pars)
+
+    def set_random(self,r):
+        self.rand = r
+        self.efficiency.set_random(r)
+        self.response.set_random(r)
+        
 
     def weighted_throw(self,sample):
         sample.weight = self.efficiency.get_eff(sample) * sample.weight

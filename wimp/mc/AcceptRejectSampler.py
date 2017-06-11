@@ -4,9 +4,16 @@ from .. import mathtools
 from .. import units
 class AcceptRejectSampler:
     def __init__(self,astro_model,int_model):
+        self.rand = np.random
         self.astro_model = astro_model
         self.interaction = int_model
         self.max_iter = 10000
+
+    def set_random(self,r,set_models=False):
+        self.rand = r
+        if set_models:
+            self.astro_model.set_random(r)
+            self.interaction.set_random(r)
 
     def set_params(self,pars,set_models=False):
         if 'AccRejMaxIter' in pars.keys():
@@ -59,20 +66,20 @@ class AcceptRejectSampler:
                 print("Accept/Reject: Max iteration reached")
                 return(-1,np.array([0,0,0]),0)
             # First, throw a velocity:
-            v = np.random.rand() * (self.vmax-self.vmin) + self.vmin
-            cosTh = 2 * np.random.rand() - 1
-            phi = np.random.rand() * 2*np.pi
+            v = self.rand.rand() * (self.vmax-self.vmin) + self.vmin
+            cosTh = 2 * self.rand.rand() - 1
+            phi = self.rand.rand() * 2*np.pi
             sinTh = np.sqrt(1-cosTh*cosTh)
             vec = np.array([v*sinTh*np.cos(phi),v*sinTh*np.sin(phi),v*cosTh])
             vec_mag = np.sqrt(vec.dot(vec))
             Ex = 0.5 * self.Mx * (vec_mag/units.speed_of_light)**2
             Emax = self.interaction.cross_section.MaxEr(Ex)
             # Throw a recoil energy
-            Er = np.random.rand() * Emax
+            Er = self.rand.rand() * Emax
             Q2 = 2 * self.Mt * Er
 
             # Throw a random probability
-            rnd = np.random.rand() * self.maxP
+            rnd = self.rand.rand() * self.maxP
 
             # Calculate the probability:
             P = vec_mag**3 * self.astro_model.velocity.f(vec) * \
@@ -85,7 +92,7 @@ class AcceptRejectSampler:
 
             iteration = iteration + 1
 
-        phi = np.random.rand() * 2 * np.pi
+        phi = self.rand.rand() * 2 * np.pi
         cosTheta = self.interaction.cross_section.cosThetaLab(Ex,Er)
 
 

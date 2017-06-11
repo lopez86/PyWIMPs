@@ -10,9 +10,20 @@ import datetime as dt
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+from multiprocessing import Pool
 
-def AnnualModulation(tmin,tmax,npts):
+# Fixed seeds here to always get same results
+# One seed per thread
+seeds = [198201, 418776, 471693, 263639, 888106, 722914, 188371]
+vpts = np.array([225,230,235,240,245,250,260]) * units.km/units.sec
 
+def calc_rate(i):
+
+    rnd = np.random.RandomState(seeds[i])
+    ex = det.Experiment()
+    # For thread safety
+    ex.set_random(rnd)
+    vE = np.array([0,0,vpts[i]])
     pars = {'AtomicNumber':131,\
             'Mx':50 * units.GeV,\
             'Mt':131 * units.amu,\
@@ -23,11 +34,19 @@ def AnnualModulation(tmin,tmax,npts):
             'v0':230*units.km/units.sec,\
             'vesc':544*units.km/units.sec,\
             'rhox':0.3*units.GeV/(units.cm**3),\
-            'ExpNSamples':1000000
+            'ExpNSamples':100000,\
+            'vE':vE
            }
-
-    ex = det.Experiment()
     ex.set_params(pars)
+    ex.initialize()
+    # Calculate the rates (here, events/day)
+    rate = ex.event_rates()
+
+    print(i,rate['Total'],rate['TotalErr'])
+    return i,rate['Total'],rate['TotalErr']
+
+def AnnualModulation(tmin,tmax,npts,pool_size=4):
+
     utc_start = dt.datetime(1970,1,1,0,0,0,tzinfo = dt.timezone.utc)
     start_time = (tmin - utc_start).total_seconds()
     end_time = (tmax - utc_start).total_seconds()
@@ -40,21 +59,16 @@ def AnnualModulation(tmin,tmax,npts):
     coord = astro.Coordinates()
     loc = astro.locations.SURF
 
-    vpts = np.array([225,230,235,240,245,250,260]) * units.km/units.sec
+
     rate_pts = np.zeros(len(vpts))
     rate_idx = np.arange(0.0,len(vpts))
     rate_pt_err = np.zeros(len(vpts))
-    for i in range(len(vpts)):
-        vE = np.array([0,0,vpts[i]])
-        ex.set_params({'vE':vE})
-        # We've changed the model so need to reinitialize
-        ex.initialize()
-        # Calculate the rates (here, events/day)
-        rate = ex.event_rates()
-        rate_pts[i] = rate['Total'] 
-        rate_pt_err[i] = rate['TotalErr']
-        print(i,rate['Total'],rate['TotalErr'])        
+    pool = Pool(pool_size)
+    m = pool.map( calc_rate,range(len(vpts)))
 
+    for x in m:
+        rate_pts[x[0]] = x[1]
+        rate_pt_err[x[0]] = x[2]
 
     for i in range(npts):
         pt = pts[i]
@@ -68,7 +82,7 @@ def AnnualModulation(tmin,tmax,npts):
         idx0 = int(interp_val)
         frac = interp_val % 1
         rate_err[i] = np.sqrt( frac**2 * rate_pt_err[idx0+1]**2 + (1-frac)**2 * rate_pt_err[idx0]**2   )
-        print(i,rates[i],rate_err[i])
+        
     return pts,rates,rate_err,v,vpts,rate_pts,rate_pt_err
 
 def run_example():

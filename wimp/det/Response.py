@@ -4,7 +4,10 @@ from ..mc.sample import Sample
 class Response:
 
     def __init__(self):
-        pass
+        self.rand = np.random
+ 
+    def set_random(self,r):
+        self.rand = r
 
     def set_params(self,pars):
         pass
@@ -13,8 +16,9 @@ class Response:
         return s
 
 
-class GaussianResponse:
+class GaussianResponse(Response):
     def __init__(self):
+        self.rand = self.rand
         self.sigma = 0.1
 
     def set_params(self,pars):
@@ -22,5 +26,5 @@ class GaussianResponse:
             self.sigma = pars['RespSigma']
 
     def throw(self,s):
-        s.Er = np.random.normal(s.Er,self.sigma * s.Er)
+        s.Er = self.rand.normal(s.Er,self.sigma * s.Er)
         return s

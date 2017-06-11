@@ -6,6 +6,13 @@ class MaxwellWeightedSampler:
     def __init__(self,astro_model,int_model):
         self.astro_model = astro_model
         self.interaction = int_model
+        self.rand = np.random
+
+    def set_random(self,r,set_models=False):
+        self.rand = r
+        if set_models:
+            self.astro_model.set_random(r)
+            self.interaction.set_random(r)
 
     def set_params(self,pars,set_models=False):
         if set_models:
@@ -28,7 +35,7 @@ class MaxwellWeightedSampler:
     def sample(self):
 
 
-        vec = np.random.normal(-self.vE,self.v0/np.sqrt(2),3)
+        vec = self.rand.normal(-self.vE,self.v0/np.sqrt(2),3)
         vec2 = vec + self.vE
 
             #Probability to throw this from the full Maxwellian distribution
@@ -44,8 +51,8 @@ class MaxwellWeightedSampler:
         #return Sample(0,0,weight,0)
         ## Now let's look at the interaction part
 
-        E = np.random.rand() * Emax
-        phi = np.random.rand() * 2 * np.pi
+        E = self.rand.rand() * Emax
+        phi = self.rand.rand() * 2 * np.pi
         cosTheta = self.interaction.cross_section.cosThetaLab(Ex,E)
 
         ## Add in the form factor

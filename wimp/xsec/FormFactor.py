@@ -1,3 +1,5 @@
+import numpy as np 
+
 class FormFactor:
     """
     Base class for form factor calculations. 
@@ -8,7 +10,10 @@ class FormFactor:
 
     def __init__(self):
         """Doesn't do anything for now."""
-        pass
+        self.rand = np.random
+ 
+    def set_random(self,r):
+        self.rand = r
 
     def set_params(self,pars):
         pass

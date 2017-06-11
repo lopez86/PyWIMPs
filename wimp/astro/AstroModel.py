@@ -4,6 +4,7 @@ import numpy as np
 class AstroModel:
 
     def __init__(self,norm=False):
+        self.rand = np.random
         self.velocity = VelocityDist()
         self._wimp_density = 0.3 * units.GeV / (units.cm**3)
         self._vE = 220 * units.km / units.sec * np.array([0,0,1])
@@ -12,6 +13,9 @@ class AstroModel:
         self.fill_params()
         if norm:
             self.velocity.normalize()        
+    def set_random(self,r):
+        self.rand = r
+        self.velocity.set_random(r)
 
     def fill_params(self):
         pars = {'rhox':self._wimp_density,'vE':self._vE,'v0':self._v0,'vesc':self._vesc}

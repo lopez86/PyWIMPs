@@ -15,51 +15,55 @@ class CrossSection:
     """
 
     def __init__(self):
-      self.totalxs = 1 #Unit normalization is default
-      self.Mt = 100*units.GeV
-      self.Mx = 100*units.GeV
+        self.rand = np.random
+        self.totalxs = 1 #Unit normalization is default
+        self.Mt = 100*units.GeV
+        self.Mx = 100*units.GeV
+
+    def set_random(self,r):
+        self.rand = r
 
     def set_params(self,pars):
-      if 'XS' in pars.keys():
-        self.totalxs = pars['XS']
-      if 'Mt' in pars.keys():
-        self.Mt = pars['Mt']
-      if 'Mx' in pars.keys():
-        self.Mx = pars['Mx']
+        if 'XS' in pars.keys():
+          self.totalxs = pars['XS']
+        if 'Mt' in pars.keys():
+          self.Mt = pars['Mt']
+        if 'Mx' in pars.keys():
+          self.Mx = pars['Mx']
 
     def dSdOmegaCM(self):
-      return self.totalxs / (4*np.pi)
+        return self.totalxs / (4*np.pi)
 
     def dSdcosThCM(self):
-      return 0.5*self.totalxs
+        return 0.5*self.totalxs
  
 
     def MaxEr(self,Ex):
-      return 4 * Ex * self.Mt * self.Mx / (self.Mt+self.Mx)**2
+        return 4 * Ex * self.Mt * self.Mx / (self.Mt+self.Mx)**2
 
     def dSdcosThLab(self,cosTh):
-      return 4 * self.totalxs * cosTh
+        return 4 * self.totalxs * cosTh
 
     def dSdErLab(self,Ex,Er):
-      maxE = self.MaxEr(Ex)
-      if Er >= maxE or Er <0:
-        return 0
-      return self.totalxs / maxE
+        maxE = self.MaxEr(Ex)
+        if Er >= maxE or Er <0:
+          return 0
+        return self.totalxs / maxE
  
     def cosThetaLab(self,Ex,Er):
-      return np.sqrt(0.5 * Er / self.MaxEr(Ex) )
+        return np.sqrt(0.5 * Er / self.MaxEr(Ex) )
 
     def ErLab(self,Ex,cosTh):
-      return 2 * self.MaxEr(Ex) * cosTh * cosTh
+        return 2 * self.MaxEr(Ex) * cosTh * cosTh
 
     def cosThetaCMFromEr(self,Ex,Er):
-      return 2 * Ex / self.MaxEr(Ex) - 1
+        return 2 * Ex / self.MaxEr(Ex) - 1
 
     def cosThetaCMFromCosTheta(self,cosTh):
-      return 4 * cosTh*cosTh - 1
+        return 4 * cosTh*cosTh - 1
 
     def ErFromCosThetaCM(self,Ex,cosTh):
-      return 0.5*self.MaxEr(Ex) * (1+cosTh)   
+        return 0.5*self.MaxEr(Ex) * (1+cosTh)   
 
     def cosThetaFromCosThetaCM(self,cosTh):
-      return 0.5 * np.sqrt( 1 + cosTh)
+        return 0.5 * np.sqrt( 1 + cosTh)

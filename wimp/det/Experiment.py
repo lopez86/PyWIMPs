@@ -10,6 +10,8 @@ import numpy as np
 
 class Experiment:
     def __init__(self):
+
+        self.rand = np.random
         self.astro_model = AstroModel()
         self.interaction = InteractionModel()
         self.rate_sampler = \
@@ -24,7 +26,7 @@ class Experiment:
         self.exposure = 300. * units.day
         self.Emin = 0
         self.Emax = 100 * units.keV
-        self.Nsamples = 200000
+        self.Nsamples = 100000
         self.nrec_meas = 0
         self.nrec_true = 0
         self.nrec_total = 0
@@ -40,13 +42,21 @@ class Experiment:
             self.Emin = pars['ExpEmin']
         if 'ExpEmax' in pars.keys():
             self.Emax = pars['ExpEmax']
-        if 'ExpNsamples' in pars.keys():
-            self.Nsamples = pars['ExpNsamples']
+        if 'ExpNSamples' in pars.keys():
+            self.Nsamples = pars['ExpNSamples']
         self.detector_model.set_params(pars)
         self.astro_model.set_params(pars)
         self.interaction.set_params(pars)
         self.rate_sampler.set_params(pars)
         self.event_sampler.set_params(pars)
+
+    def set_random(self,r):
+        self.rand = r
+        self.detector_model.set_random(r)
+        self.astro_model.set_random(r)
+        self.interaction.set_random(r)
+        self.rate_sampler.set_random(r)
+        self.event_sampler.set_random(r)
 
 
     def set_astro(self,am):
@@ -77,24 +87,24 @@ class Experiment:
 
         for i in range(N):
             s = self.rate_sampler.sample()
-            self.nrec_total += s.weight / N
-            self.nrec_total_err += s.weight**2 / N**2
+            self.nrec_total += s.weight
+            self.nrec_total_err += s.weight**2
             if self.Emin <= s.Er < self.Emax:
-                self.nrec_true += s.weight / N
-                self.nrec_true_err += s.weight**2 / N**2
+                self.nrec_true += s.weight
+                self.nrec_true_err += s.weight**2 
             s = self.detector_model.weighted_throw(s)
             if self.Emin <= s.Er < self.Emax:
-                self.nrec_meas += s.weight / N
-                self.nrec_meas_err += s.weight**2 / N**2
+                self.nrec_meas += s.weight 
+                self.nrec_meas_err += s.weight**2
 
         #print("Integral: ",self.nrec_total)      
-        self.nrec_total *= self.exposure
-        self.nrec_true *= self.exposure
-        self.nrec_meas *= self.exposure
+        self.nrec_total *= self.exposure / N
+        self.nrec_true *= self.exposure / N
+        self.nrec_meas *= self.exposure / N
 
-        self.nrec_total_err = self.exposure * np.sqrt(self.nrec_total_err)
-        self.nrec_true_err = self.exposure * np.sqrt(self.nrec_true_err)
-        self.nrec_meas_err = self.exposure * np.sqrt(self.nrec_meas_err)
+        self.nrec_total_err = self.exposure * np.sqrt(self.nrec_total_err) /N
+        self.nrec_true_err = self.exposure * np.sqrt(self.nrec_true_err) /N
+        self.nrec_meas_err = self.exposure * np.sqrt(self.nrec_meas_err) /N
  
 
         return {'Total':self.nrec_total,
@@ -106,7 +116,7 @@ class Experiment:
 
     def throw_dataset(self,aveN):
         data = []
-        N = np.random.poisson(aveN)
+        N = self.rand.poisson(aveN)
 
         while len(data) < N:
             s = self.event_sampler.sample()

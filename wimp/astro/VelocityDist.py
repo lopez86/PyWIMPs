@@ -21,6 +21,7 @@ class VelocityDist:
     """
 
     def __init__(self):
+        self.rand = np.random
         self.v0 = 220 * units.km / units.sec
         self.vesc = 550 * units.km / units.sec
         self.vE = 220 * units.km / units.sec * np.array([0,0,1])
@@ -28,6 +29,10 @@ class VelocityDist:
         self.max_iter = 1000000 # Gets ~0.01% error for fairly standard assumptions
         self.tol_norm = 0.001
         self.needs_norm = True
+
+    def set_random(self,r):
+        self.rand = r
+
     def set_params(self,pars):
         """
         Set the parameters for the velocity model.

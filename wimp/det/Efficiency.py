@@ -3,7 +3,11 @@ from ..mc.sample import Sample
 
 class Efficiency:
     def __init__(self):
+        self.rand = np.random
         self.eff = 1
+
+    def set_random(self,r):
+        self.rand = r
 
     def set_params(self,pars):
         if 'EffMax' in pars.keys():

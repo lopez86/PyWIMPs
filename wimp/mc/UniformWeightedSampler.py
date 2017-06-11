@@ -8,6 +8,13 @@ class UniformWeightedSampler:
     def __init__(self,astro_model,int_model):
         self.astro_model = astro_model
         self.interaction = int_model
+        self.rand = np.random
+
+    def set_random(self,r,set_models=False):
+        self.rand = r
+        if set_models:
+            self.astro_model.set_random(r)
+            self.interaction.set_random(r)
 
     def set_params(self,pars,set_models=False):
         if set_models:
@@ -41,7 +48,7 @@ class UniformWeightedSampler:
     def sample(self):
 
 
-        rnd = np.random.rand(3)
+        rnd = self.rand.rand(3)
         vec = self.e1*((self.e1max-self.e1min) * rnd[0] +self.e1min) 
         vec = vec + self.e2*((self.e2max-self.e2min) * rnd[1] + self.e2min)
         vec = vec + self.e3*((self.e3max-self.e3min) * rnd[2] + self.e3min)
@@ -54,8 +61,8 @@ class UniformWeightedSampler:
         Ex = 0.5 * self.Mx * (vec_mag/units.speed_of_light)**2
         Emax = self.interaction.cross_section.MaxEr(Ex)
 
-        E = np.random.rand() * Emax
-        phi = np.random.rand() * 2 * np.pi
+        E = self.rand.rand() * Emax
+        phi = self.rand.rand() * 2 * np.pi
         cosTheta = self.interaction.cross_section.cosThetaLab(Ex,E)
         ## E and phi are uniform so they do not introduce a weight
         ## That is, normalization and volume cancel out

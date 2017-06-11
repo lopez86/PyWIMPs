@@ -1,10 +1,12 @@
 from .. import units
 from .CrossSection import CrossSection
 from .FormFactor import FormFactor
+import numpy as np
 
 class InteractionModel:
 
     def __init__(self):
+        self.rand = np.random
         self.cross_section = CrossSection()
         self.form_factor = FormFactor()
         self._Mx = 100*units.GeV
@@ -12,7 +14,12 @@ class InteractionModel:
         self._Mtot = 100 * units.kg
         self._total_xs = 1e-40*units.cm*units.cm
         self.fill_params()
-
+  
+    def set_random(self,r):
+        self.rand = r
+        self.cross_section.set_random(r)
+        self.form_factor.set_random(r)
+ 
     def fill_params(self):
         pars = {"Mx":self._Mx,"Mt":self._Mt,"XS":self._total_xs}
         self.cross_section.set_params(pars)

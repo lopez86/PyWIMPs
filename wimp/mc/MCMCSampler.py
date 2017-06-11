@@ -2,15 +2,23 @@ import numpy as np
 from .. import units
 from .. import mathtools
 from .sample import Sample
-
+import numpy as np
 
 class MCMCSampler:
     def __init__(self,astro_model,int_model):
+        self.rand = np.random
         self.astro_model = astro_model
         self.interaction = int_model
         self.sigma = 20 * units.km / units.sec
         self.nburnin = 1000
         self.Ntries = 0
+
+    def set_random(self,r,set_models=False):
+        self.rand = r
+        if set_models:
+            self.astro_model.set_random(r)
+            self.interaction.set_random(r)
+
     def set_params(self,pars,set_models=False):
         if 'MCMCSigma' in pars.keys():
             self.sigma = pars['MCMCSigma']
@@ -41,9 +49,9 @@ class MCMCSampler:
         ### Now, run the burnin part
 
         ### First, set up an initial guess:
-        vguess = 0.95*self.vesc * (np.random.rand())**(0.33333)        
-        costhguess = 2 * np.random.rand() - 1
-        phiguess = 2*np.pi * np.random.rand()
+        vguess = 0.95*self.vesc * (self.rand.rand())**(0.33333)        
+        costhguess = 2 * self.rand.rand() - 1
+        phiguess = 2*np.pi * self.rand.rand()
         sinthguess = np.sqrt(1 - costhguess*costhguess)
         self.lastv = np.array([vguess * np.cos(phiguess) * sinthguess, \
                                vguess * np.sin(phiguess) * sinthguess, \
@@ -52,7 +60,7 @@ class MCMCSampler:
         vguess = np.sqrt(self.lastv.dot(self.lastv))
         Ex = 0.5 * self.Mx * (vguess/units.speed_of_light)**2
         Emax = self.interaction.cross_section.MaxEr(Ex)
-        self.lastE = np.random.rand() * Emax
+        self.lastE = self.rand.rand() * Emax
         Q2 = 2 * self.Mt * self.lastE        
 
         self.lastP = vguess * \
@@ -73,7 +81,7 @@ class MCMCSampler:
         while not done:
             self.Ntries = self.Ntries + 1
             # Propose a new WIMP velocity
-            vprop = np.random.normal(self.lastv,self.sigma)
+            vprop = self.rand.normal(self.lastv,self.sigma)
             vec_mag = np.sqrt(vprop.dot(vprop))
             ## Get the maximum energy
             self.Ex = 0.5 * self.Mx * (vec_mag/units.speed_of_light)**2
@@ -92,7 +100,7 @@ class MCMCSampler:
             ## Acceptance only depends on E through the form factor
 
             ## Propose an energy:
-            Eprop = np.random.rand()*Emax
+            Eprop = self.rand.rand()*Emax
             Q2 = 2 * self.Mt * Eprop
  
             ## Get the probability
@@ -106,7 +114,7 @@ class MCMCSampler:
             # Get the acceptance function:
             alpha = min(1,Pprop / self.lastP)
             # Throw a random number
-            if alpha <= np.random.rand():
+            if alpha <= self.rand.rand():
                 continue
 
             self.lastv = vprop
@@ -114,7 +122,7 @@ class MCMCSampler:
             self.lastP = Pprop
             break
 
-        phi = np.random.rand() * 2 * np.pi
+        phi = self.rand.rand() * 2 * np.pi
         cosTheta = self.interaction.cross_section.cosThetaLab(self.Ex,self.lastE)
 
         ## Let's go back into the lab frame:
