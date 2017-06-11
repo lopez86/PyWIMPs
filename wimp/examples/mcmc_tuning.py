@@ -26,7 +26,7 @@ def get_test_hist(am,im):
 
 def evaluate_params(am,im,nburnin,sigma,hmaxw, N,ns):
     mcmc = MCMCSampler(am,im)
-    pars={'nburnin':nburnin,'sigma':sigma }
+    pars={'MCMCburnin':nburnin,'MCMCSigma':sigma }
 
     mcmc.set_params(pars)
     mcmc.initialize()
@@ -44,23 +44,20 @@ def evaluate_params(am,im,nburnin,sigma,hmaxw, N,ns):
         if i % (N//10) == 0:
             print('MCMC %0.1f%% done' %( (10.0*i) / (N//10) ) )
         
-        if i % ns == ns-1:
+        if (i % ns) == (ns-1):
             accept_frac[i//ns] = (1.0*ns) / ntries        
             ntries = 0
             chisquare = 0
             sum_ratio = hmaxw.Integral() / hmcmc.Integral()
-            n_nonzero = 0
             for j in range(1,hmcmc.GetNbinsX()+1):
                 nev = hmcmc.GetBinContent(j)
-                if nev == 0:
-                    continue
-                n_nonzero = n_nonzero + 1
+                estimate = hmaxw.GetBinContent(j) / sum_ratio
+                esterr = hmaxw.GetBinError(j) / sum_ratio
                 # Ignore the uncertainty on hmaxw
 
                 chisq[i//ns] = chisq[i//ns] +  \
-                               (nev - hmaxw.GetBinContent(j)/sum_ratio )**2 / nev
-            if n_nonzero != 0:
-                chisq[i//ns] = chisq[i//ns] / (n_nonzero) # Approx. Chi^2/NDF
+                               (nev - estimate )**2 / (estimate + esterr**2)
+            chisq[i//ns] = chisq[i//ns] / (hmaxw.GetNbinsX()) # Approx. Chi^2/NDF
 
         sample = mcmc.sample()
         hmcmc.Fill(sample.Er/units.keV)
@@ -77,14 +74,14 @@ def run_test(nburnin_vec=[5000,],sigma_vec=[100*units.km/units.sec,]):
     hmaxw = get_test_hist(am,im)
     for nb in nburnin_vec:
         for sig in sigma_vec:
-            samples, accept_frac, chisq =  evaluate_params(am,im,nb,sig,hmaxw,500000,250)
+            samples, accept_frac, chisq =  evaluate_params(am,im,nb,sig,hmaxw,500000,500)
 
     fig1 = plt.figure(1)
     ax = fig1.add_subplot(111)
     ax.plot(samples,chisq)
     ax.set_xlabel('Sample')
     ax.set_ylabel('Histogram ChiSquare')
-    ax.set_ylim(0,10)
+#    ax.set_ylim(0,10)
     fig2 = plt.figure(2)
     ax = fig2.add_subplot(111)
     ax.plot(samples,accept_frac)
