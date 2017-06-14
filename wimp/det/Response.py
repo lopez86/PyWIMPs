@@ -19,6 +19,11 @@ class Response:
         """ Initialize the object. """
         self._rand = np.random
  
+    def initialize(self):
+        """ Do any initial calculations of parameters."""
+        pass
+
+
     @property
     def random(self):
         """ The random number generator. """

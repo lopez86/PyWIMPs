@@ -27,6 +27,11 @@ class Efficiency:
         self._rand = np.random
         self.eff = 1
 
+    def initialize(self):
+        """ Do any initial calculations of parameters."""
+        pass
+
+
     @property
     def random(self):
         """ The random number generator. """

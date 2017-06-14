@@ -39,6 +39,10 @@ class CrossSection:
         self.Mt = 100*units.GeV
         self.Mx = 100*units.GeV
 
+    def initialize(self):
+        """ Do any initial calculations of parameters."""
+        pass
+
     @property
     def random(self):
         """ Random number generator. Not used in base class."""

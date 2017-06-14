@@ -39,6 +39,12 @@ class InteractionModel:
         self.cross_section.Mt = self._Mt
         self.cross_section.totalxs = self._total_xs
 
+    def initialize(self):
+        """ Do any initial calculations of parameters."""
+        self.cross_section.initialize()
+        self.form_factor.initialize()
+
+
     @property
     def random(self):
         """ Random number generator. Not used in base class."""

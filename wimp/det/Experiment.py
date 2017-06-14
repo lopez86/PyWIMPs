@@ -95,6 +95,14 @@ class Experiment:
         self.rate_sampler.set_params(pars)
         self.event_sampler.set_params(pars)
 
+    def initialize(self):
+        """ Do any initial calculations of parameters."""
+        self.detector_model.initialize()
+        self.astro_model.initialize()
+        self.interaction.initialize()
+        self.rate_sampler.initialize()
+        self.event_sampler.initialize()
+
     @property
     def random(self):
         """ The random number generator. """

@@ -22,6 +22,10 @@ class FormFactor:
         """ Initialize. Doesn't do much here"""
         self._rand = np.random
  
+    def initialize(self):
+        """ Do any initial calculations of parameters."""
+        pass
+
     @property
     def random(self):
         """ Random number generator."""

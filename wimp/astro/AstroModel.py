@@ -42,6 +42,11 @@ class AstroModel:
         if norm:
             self.velocity.normalize()
 
+    def initialize(self):
+        """ Do any initial calculations of parameters."""
+        self.velocity.initialize()
+
+
     @property
     def random(self):
         """ The random number generator. """

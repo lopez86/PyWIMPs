@@ -28,6 +28,11 @@ class VelocityDist:
         self.norm = 1.0 / (np.pi * self.v0*self.v0)**1.5
         self.needs_norm = True
 
+    def initialize(self):
+        """ Do any initial calculations of parameters."""
+        self.normalize()
+
+
     @property
     def random(self):
         """ The random number generator. """

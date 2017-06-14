@@ -32,6 +32,12 @@ class DetectorModel:
         self.response = Response()
         self._rand = np.random
 
+    def initialize(self):
+        """ Do any initial calculations of parameters."""
+        self.efficiency.initialize() 
+        self.response.initialize()
+
+
     def set_params(self,pars):
         """ Set parameters and pass to contained objects.
     
