@@ -21,28 +21,28 @@ class DetectorModel:
             response: Detector response model
     """
     def __init__(self):
-    """ Initializes with default attributes 
-
-        The efficiency model is set to a constant.
-        The response is set to do nothing.
-        The random number generator is the default numpy one.
-
-    """
+        """ Initializes with default attributes 
+    
+            The efficiency model is set to a constant.
+            The response is set to do nothing.
+            The random number generator is the default numpy one.
+    
+        """
         self.efficiency = Efficiency()
         self.response = Response()
-        self.set_random(np.random)
+        self._rand = np.random
 
     def set_params(self,pars):
-    """ Set parameters and pass to contained objects.
-
-        This class has no parameters to be set and passes the
-        parameters to the efficiency and response models. The
-        random number generator must be set separately.
-
-        Args:
-           pars: (dict{string}) the new parameters
-
-    """
+        """ Set parameters and pass to contained objects.
+    
+            This class has no parameters to be set and passes the
+            parameters to the efficiency and response models. The
+            random number generator must be set separately.
+    
+            Args:
+               pars: (dict{string}) the new parameters
+    
+        """
         self.efficiency.set_params(pars)
         self.response.set_params(pars)
 

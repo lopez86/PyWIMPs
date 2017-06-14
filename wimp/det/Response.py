@@ -17,7 +17,7 @@ class Response:
 
     def __init__(self):
         """ Initialize the object. """
-        self.set_random(np.random)
+        self._rand = np.random
  
     @property
     def random(self):

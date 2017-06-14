@@ -44,7 +44,7 @@ class Experiment:
     """
     def __init__(self):
         """ Initialize to some default values. """
-        self.set_random(np.random)
+        self._rand = random
         self.astro_model = AstroModel()
         self.interaction = InteractionModel()
         self.rate_sampler = \

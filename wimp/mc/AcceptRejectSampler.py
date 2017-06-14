@@ -16,7 +16,7 @@ class AcceptRejectSampler:
 
         Attributes:
             astro_model (AstroModel)
-            interactoin (InteractionModel)
+            interaction (InteractionModel)
             max_iter (int): Max # of iterations before
                             stopping throws
 
@@ -48,7 +48,7 @@ class AcceptRejectSampler:
                 astro_model (AstroModel)
                 int_model (Interaction)
         """
-        self.set_random(np.random)
+        self._rand = np.random
         self.astro_model = astro_model
         self.interaction = int_model
         self.max_iter = 10000
@@ -123,7 +123,11 @@ class AcceptRejectSampler:
 
 
     def sample(self):
-
+        """ Get a sample.
+  
+            Returns:
+                An unbiased sample.
+        """
 
         passed = False
 

@@ -21,7 +21,7 @@ class VelocityDist:
     """
 
     def __init__(self):
-        self.set_random( np.random )
+        self._rand = np.random
         self.v0 = 220 * units.km / units.sec
         self.vesc = 550 * units.km / units.sec
         self.vE = 220 * units.km / units.sec * np.array([0,0,1])

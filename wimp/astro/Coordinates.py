@@ -1,3 +1,12 @@
+""" Coordinates.py
+
+    Tools to get WIMP halo velocities and transform from galactic
+    to global coordinate systems.
+"""
+__author__    = "Jeremy P. Lopez"
+__date__      = "June 2017"
+__copyright__ = "(c) 2017, Jeremy P. Lopez"
+
 import numpy as np
 import datetime as dt
 import astropy.time as astime
@@ -5,10 +14,11 @@ import astropy.coordinates as ascoords
 from astropy import units as u
 from .. import units
 
+
 class Coordinates:
     """ 
-    Class to calculate things like the direction and mean velocity of WIMPs
-    in the dark matter halo.
+    Class to calculate things like the direction and mean velocity 
+    of WIMPs in the dark matter halo.
 
     Equations for motion follow:
     Lewin, J.D. and Smith, P.F., Astropart. Phys. 6 (1996) 87-112.
@@ -17,13 +27,25 @@ class Coordinates:
     and
     Freese, Lisanti, and Savage. Rev. Mod. Phys. 85 (2013) 1561.
 
-
+    Attributes (not an exhaustive list):
+        ur: Sun's motion through WIMP cloud in galactic coords
+        us: Sun's anomalous motion compared to everything else
+        uEmean: mean Earth velocity around sun
+        beta,lambda*: Used to get Earth's motion as a function
+                      of time
+        ellipticity: Ellipticity of Earth's motion around sun
+        J2000: Timestamp of noon, 31 Dec 1999 (UTC)
+        earthSpeed: Speed of a point on the surface of Earth
     """ 
     def __init__(self):
+        """ Initialize various important constants used in 
+            calculations.
+        """
         self.ur = np.array([0,230,0]) * units.km /units.sec
         self.us = np.array([9,12,7]) * units.km / units.sec
         self.beta = np.array([-5.503,59.575,29.812]) * units.deg
-        self.lambda_ = np.array([266.141,-13.3485,179.3212]) * units.deg
+        self.lambda_ = (np.array([266.141,-13.3485,179.3212]) 
+                        * units.deg)
         self.uEmean = 29.79 * units.km / units.sec
         self.ellipticity = 0.016722
         self.lambda0 = 13 * units.deg
@@ -33,7 +55,8 @@ class Coordinates:
         self.lambdag1 = 0.9856003 * units.deg
         self.lambdaB = 1.915 * units.deg
         self.lambdaC = 0.020 * units.deg
-        self.J2000 = dt.datetime(1999,12,31,12,0,0,tzinfo = dt.timezone.utc)
+        self.J2000 = dt.datetime(1999,12,31,12,0,0,
+                                 tzinfo = dt.timezone.utc)
 
         self.earthSpeed = 6371. * units.km / (86400. * units.sec)
 

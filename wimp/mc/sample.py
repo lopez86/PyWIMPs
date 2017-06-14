@@ -30,11 +30,13 @@ class Sample:
                 vwimp: WIMP velocity vector
         """
 
-        self.Er = Er
-        self.recoil_vec = vrecoil
+        self._Er = Er
+        self._recoil_vec = vrecoil
         self.gen_weight = weight
         self.wimp_vec = vwimp
         self.det_weight = 1.0
+        self.Er_reco = Er
+        self.recoil_vec_reco = vrecoil
 
     @property
     def weight(self):

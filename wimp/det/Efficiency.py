@@ -21,10 +21,10 @@ class Efficiency:
 
     """
     def __init__(self):
-    """ Initializes to 100% efficiency and default numpy 
-        randomization
-    """
-        self.set_random(np.random)
+        """ Initializes to 100% efficiency and default numpy 
+            randomization
+        """
+        self._rand = np.random
         self.eff = 1
 
     @property

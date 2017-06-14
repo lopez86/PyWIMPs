@@ -34,8 +34,8 @@ def CompareMethods():
     v0 = am.velocity.v0
     vE = np.sqrt( am.velocity.vE.dot(am.velocity.vE))
     E0 = 0.5 * Mx *v0*v0 / units.speed_of_light**2
-    R0 = 2./np.sqrt(np.pi) * am.wimp_density()/Mx * \
-         v0 * im.total_xs() * im.Mtot()/Mt 
+    R0 = 2./np.sqrt(np.pi) * am.wimp_density/Mx * \
+         v0 * im.total_xs * im.Mtot/Mt 
 
     unif = UniformWeightedSampler(am,im)
     maxw = MaxwellWeightedSampler(am,im)

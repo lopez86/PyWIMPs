@@ -16,6 +16,7 @@ __copyright__ = "(c) 2017, Jeremy P. Lopez"
 
 import numpy as np
 
+#Energy/Mass
 MeV = 1.
 GeV = 1000.
 keV = 0.001
@@ -25,16 +26,28 @@ tonne = 1000*kg
 eV = 1e-6
 TeV = 1e6
 amu = 931.5 * MeV
+
+#Distance
 cm = 1
 fm = 1e-13
 meter = 100
 km = 1e5
+
+#Time
 sec = 1
 minute = 60 * sec
 hour = 3600 * sec
 day = 86400 * sec
 week = 7 * day
 year = 365.25 * day
+
+#Angle
+deg = np.pi / 180.0
+
+# Constants
 speed_of_light = 299792458 * meter / sec
 hbarc = 197.327 * MeV * fm  # MeV-fm
-deg = np.pi / 180.0
+proton_mass = 938.272 * MeV
+neutron_mass = 939.565 * MeV
+proton_mag_moment = 5.586 # nuclear magnetons
+neutron_mag_moment = -3.826 # nuclear magnetons

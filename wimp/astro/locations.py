@@ -1,4 +1,15 @@
-""" This file contains locations of various places around the world """
+""" locations.py
+
+This file contains locations (lat,lon) of various places 
+around the world.
+
+The places include a number of cities as well as national
+labs and underground labs.
+"""
+__author__ = "Jeremy P. Lopez"
+__date__      = "June 2017"
+__copyright__ = "(c) 2017, Jeremy P. Lopez"
+
 import numpy as np
 
 # Cities
