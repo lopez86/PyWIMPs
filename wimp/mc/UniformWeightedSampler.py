@@ -22,15 +22,15 @@ class UniformWeightedSampler:
             self.interaction.set_params(pars)
 
     def initialize(self):
-        self.vE = self.astro_model.vE()
-        self.v0 = self.astro_model.v0()
-        self.vesc = self.astro_model.vesc()
-        self.Mx = self.interaction.Mx()
-        self.Mt = self.interaction.Mt()
-        self.xs = self.interaction.total_xs()
+        self.vE = self.astro_model.vE
+        self.v0 = self.astro_model.v0
+        self.vesc = self.astro_model.vesc
+        self.Mx = self.interaction.Mx
+        self.Mt = self.interaction.Mt
+        self.xs = self.interaction.total_xs
         self.mu = self.Mx*self.Mt / (self.Mx+self.Mt)
         self.Mtot = self.interaction.Mtot()
-        self.rho = self.astro_model.wimp_density()
+        self.rho = self.astro_model.wimp_density
 
         self.e1,self.e2,self.e3 = mathtools.get_axes(self.vE)
 
@@ -42,7 +42,9 @@ class UniformWeightedSampler:
         self.e3min = -self.vesc
         self.e3max = self.vesc
 
-        self.vol = (self.e1max-self.e1min)*(self.e2max-self.e2min)*(self.e3max-self.e3min)
+        self.vol = ((self.e1max-self.e1min)
+                   * (self.e2max-self.e2min) 
+                   * (self.e3max-self.e3min))
 
 
     def sample(self):
@@ -71,15 +73,15 @@ class UniformWeightedSampler:
         Q2 = 2 * self.Mt * E
         weight = weight * self.interaction.form_factor.ff2(Q2)
         # Add in the constants so that we normalize to rate
-        #weight = weight * self.xs * self.rho * self.Mtot / (2 * self.mu*self.mu * self.Mx) * Emax
+        
         weight *= self.xs * self.rho/self.Mx * self.Mtot/self.Mt 
 
 
         ## Let's go back into the lab frame:
         e1v,e2v,e3v = mathtools.get_axes(vec)
-        recoil_lab = e1v * cosTheta + \
-                     np.sqrt(1-cosTheta*cosTheta) * \
-                     ( np.cos(phi) * e2v + np.sin(phi) * e3v )
+        recoil_lab = (e1v * cosTheta 
+                      + np.sqrt(1-cosTheta*cosTheta) 
+                      * ( np.cos(phi) * e2v + np.sin(phi) * e3v ))
 
         return Sample(E,recoil_lab,weight,vec)
 

@@ -29,11 +29,11 @@ class MCMCSampler:
             self.interaction.set_params(pars)
 
     def initialize(self):
-        self.vE = self.astro_model.vE()
-        self.v0 = self.astro_model.v0()
-        self.vesc = self.astro_model.vesc()
-        self.Mx = self.interaction.Mx()
-        self.Mt = self.interaction.Mt()
+        self.vE = self.astro_model.vE
+        self.v0 = self.astro_model.v0
+        self.vesc = self.astro_model.vesc
+        self.Mx = self.interaction.Mx
+        self.Mt = self.interaction.Mt
         self.mu = self.Mx*self.Mt / (self.Mx+self.Mt)
 
         self.e1,self.e2,self.e3 = mathtools.get_axes(self.vE)
@@ -53,8 +53,8 @@ class MCMCSampler:
         costhguess = 2 * self.rand.rand() - 1
         phiguess = 2*np.pi * self.rand.rand()
         sinthguess = np.sqrt(1 - costhguess*costhguess)
-        self.lastv = np.array([vguess * np.cos(phiguess) * sinthguess, \
-                               vguess * np.sin(phiguess) * sinthguess, \
+        self.lastv = np.array([vguess * np.cos(phiguess) * sinthguess,
+                               vguess * np.sin(phiguess) * sinthguess,
                                vguess * costhguess] )
         self.lastv = self.lastv - self.vE
         vguess = np.sqrt(self.lastv.dot(self.lastv))
@@ -63,9 +63,9 @@ class MCMCSampler:
         self.lastE = self.rand.rand() * Emax
         Q2 = 2 * self.Mt * self.lastE        
 
-        self.lastP = vguess * \
-                     self.astro_model.velocity.f(self.lastv) * \
-                     self.interaction.form_factor.ff2(Q2)
+        self.lastP = (vguess
+                      * self.astro_model.velocity.f(self.lastv)
+                      * self.interaction.form_factor.ff2(Q2))
                      
         # The other things that we're throwing (Er, phi_r)
         # will have flat priors so we don't need to save anything
@@ -104,9 +104,9 @@ class MCMCSampler:
             Q2 = 2 * self.Mt * Eprop
  
             ## Get the probability
-            Pprop = vec_mag * \
-                         self.astro_model.velocity.f(vprop) * \
-                         self.interaction.form_factor.ff2(Q2)
+            Pprop = (vec_mag
+                         * self.astro_model.velocity.f(vprop)
+                         * self.interaction.form_factor.ff2(Q2))
 
            
             if Pprop <= 0:
@@ -123,13 +123,14 @@ class MCMCSampler:
             break
 
         phi = self.rand.rand() * 2 * np.pi
-        cosTheta = self.interaction.cross_section.cosThetaLab(self.Ex,self.lastE)
+        cosTheta = self.interaction.cross_section.cosThetaLab(self.Ex,
+                            self.lastE)
 
         ## Let's go back into the lab frame:
         e1v,e2v,e3v = mathtools.get_axes(self.lastv)
-        recoil_lab = e1v * cosTheta + \
-                     np.sqrt(1-cosTheta*cosTheta) * \
-                     ( np.cos(phi) * e2v + np.sin(phi) * e3v )
+        recoil_lab = (e1v * cosTheta
+                      + np.sqrt(1-cosTheta*cosTheta)
+                      * ( np.cos(phi) * e2v + np.sin(phi) * e3v ))
 
         return Sample(self.lastE,recoil_lab,1,self.lastv)
 

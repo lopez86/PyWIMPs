@@ -1,4 +1,21 @@
+""" units.py
+
+    This module holds the definitions of many units and physical
+    constants. In the unit system used here, 
+
+    Mass, energy: MeV = 1
+    Time:         second = 1
+    Distance:     cm = 1
+    Angle:        rad = 1
+
+"""
+
+__author__    = "Jeremy P. Lopez"
+__date__      = "June 2017"
+__copyright__ = "(c) 2017, Jeremy P. Lopez"
+
 import numpy as np
+
 MeV = 1.
 GeV = 1000.
 keV = 0.001

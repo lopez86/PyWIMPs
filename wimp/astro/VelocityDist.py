@@ -21,17 +21,26 @@ class VelocityDist:
     """
 
     def __init__(self):
-        self.rand = np.random
+        self.set_random( np.random )
         self.v0 = 220 * units.km / units.sec
         self.vesc = 550 * units.km / units.sec
         self.vE = 220 * units.km / units.sec * np.array([0,0,1])
         self.norm = 1.0 / (np.pi * self.v0*self.v0)**1.5
-        self.max_iter = 1000000 # Gets ~0.01% error for fairly standard assumptions
-        self.tol_norm = 0.001
         self.needs_norm = True
 
+    @property
+    def random(self):
+        """ The random number generator. """
+        return self._rand
+
+    @random.setter
     def set_random(self,r):
-        self.rand = r
+        """ Set the random number generator.
+ 
+            Args:
+                r (Numpy RandomState)
+        """
+        self._rand = r
 
     def set_params(self,pars):
         """
@@ -42,6 +51,7 @@ class VelocityDist:
             'v0' (float) width (1D rms/sqrt(2))
             'vE' (array(3)) velocity of lab frame through DM halo
             'vesc' galactic escape velocity
+
         """
         # renormalize:
         renorm = False
@@ -53,13 +63,8 @@ class VelocityDist:
         if 'vesc' in pars.keys():
             self.vesc = pars['vesc'] 
             renorm = True
-        if 'VelTol' in pars.keys():
-            self.tol_norm = pars['VelTol']
-        if 'VelMaxIter' in pars.keys():
-            self.max_iter = pars['VelMaxIter']
         if renorm:
-            self.norm = 1.0 / (np.pi * self.v0*self.v0)**1.5
-            self.needs_norm = True
+            self.normalize()
 
     def f(self,v):
         """
