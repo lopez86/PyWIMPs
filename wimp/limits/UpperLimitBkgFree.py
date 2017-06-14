@@ -1,3 +1,8 @@
+""" UpperLimitBkgFree.py
+
+    Calculate frequentist upper limits given an all-signal
+    (background-free) model.
+"""
 from .. import units
 from ..astro.VelocityDist import VelocityDist
 from ..astro.AstroModel import AstroModel
@@ -11,9 +16,31 @@ import numpy as np
 import scipy.stats
 
 class UpperLimitBkgFree:
+    """ Class to calculate simple upper limits where it is 
+        assumed that there are no background events.
 
+        For counting experiments.
+
+        Attributes:
+            _tol: The fractional tolerance for rate calculations 
+                  and cross section limits.
+            model: The physics model used to calculate rates. 
+                   Must have sample() defined.
+            _Emin: Minimum energy
+            _Emax: Maximum energy 
+ 
+    """
     _tol = 1e-4
     def __init__(self,model=None):
+        """ Initialize. 
+
+            Default uses the Maxwellian weighted Monte Carlo 
+            sampler. Cross sections given in cm^2 by default.
+            Standard energy range is 0-100 keV.
+
+            Args:
+                model: The physics model.
+        """
  
         if model == None:
             self.model = MaxwellWeightedSampler( \
@@ -30,13 +57,30 @@ class UpperLimitBkgFree:
 
 
     def set_limits(self,Emin,Emax):
+        """ Set the energy range the analysis looks at.
+  
+            Args:
+                Emin: Minimum energy.
+                Emax: Maximum energy.
+        """
         self._Emin = Emin
         self._Emax = Emax
 
     def set_tolerance(self,tol):
+        """ Set the tolerance used in weight and cross section
+            calculations. Fractional value. 
+      
+            Args:
+                tol: The new value
+        """
         self._tol = tol
 
     def get_rate(self):
+        """ Get the interaction rate.
+
+            Here, we only need the overall rate the detector
+            is expected to see for the given model.
+        """
         err = 2
         rate = 0
         rate_var = 0
@@ -52,6 +96,14 @@ class UpperLimitBkgFree:
         return rate
 
     def get_limit(self,Mx,N_exp = 0, CL=0.9):
+        """ Get the CL upper limit
+            Default is 0 events with a 90% confidence level.
+
+            Args:
+                Mx: The WIMP mass
+                N_exp: (int) The number of events measured
+                CL: (float, 0-1) The confidence level.
+        """
 
         self.model.interaction.Mx = Mx
         rate = self.get_rate()
@@ -62,6 +114,12 @@ class UpperLimitBkgFree:
         return xs_limit, fn
 
 def upper_limit(N_exp=0,CL=0.9):
+    """ Function to calculate Poisson upper limits.
+
+        Args:
+            N_exp: Number of measured events.
+            CL: Confidence level
+    """
     # We measured nothing. Easy case
     if N_exp == 0:
         # Works for frequentist and also 
