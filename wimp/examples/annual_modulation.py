@@ -1,4 +1,20 @@
-""" This example calculates the annual modulation of SI recoil events for 50 GeV WIMPs on xenon """
+""" annual_modulation.py
+
+This example calculates the annual modulation of SI recoil events 
+for 50 GeV WIMPs on xenon. No form factor or detector effects
+are considered here.
+
+Example:
+
+>>> run_example()
+
+Matplotlib will display several plots of things like
+the total rate over time and the velocity.
+"""
+
+__author__ = 'Jeremy P. Lopez'
+__date__ = 'June 2017'
+__copyright__ = '(c) June 2017, Jeremy P. Lopez'
 
 from .. import units
 from .. import xsec
@@ -12,6 +28,23 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
 def AnnualModulation(tmin,tmax,npts):
+    """ Calculates the event rate for the given time period.
+
+    Args:
+        tmin (Datetime): The start time
+        tmax (Datetime): The end time
+        npts: The number of points
+
+    Returns: (note: return values are pretty ugly here)
+        Time points
+        Interaction rates (per day)
+        Estimated rate uncertainties
+        WIMP velocities
+        Velocity points used for interpolation
+        Rates at the interpolation points
+        Rate errors at the interpolation points
+   
+    """
 
     pars = {'AtomicNumber':131,\
             'Mx':50 * units.GeV,\
@@ -72,6 +105,11 @@ def AnnualModulation(tmin,tmax,npts):
     return pts,rates,rate_err,v,vpts,rate_pts,rate_pt_err
 
 def run_example():
+    """ Gets the annual modulation signal for 2016 and 2017.
+
+    Runs AnnualModulation()
+    Creates a number of matplotlib plots and displays them.
+    """
     tmin = dt.datetime(2016,1,1,0,0,0,tzinfo = dt.timezone.utc)
     tmax = dt.datetime(2018,1,1,0,0,0,tzinfo = dt.timezone.utc)
    
@@ -163,7 +201,5 @@ def run_example():
 
     ax.grid(True)
     fig.autofmt_xdate()
-
-
 
     plt.show()

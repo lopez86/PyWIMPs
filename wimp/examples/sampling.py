@@ -1,3 +1,36 @@
+""" sampling.py
+
+Compare the results of the different methods.
+
+Requires PyROOT (root.cern.ch)
+
+Example:
+(1) Get timing information
+$ python sampling.py
+
+(2) Visualize spectra:
+
+>>> h1,h2,h3,h4,f = CompareMethods()
+
+# Output are ROOT objects: TH1F and TF1
+# h1 = uniform weighted throws
+# h2 = Maxwell-Boltzmann weighted throws
+# h3 = Rejection sampling
+# h4 = Metropolis-Hastings MCMC
+# f = Almost analytic function.
+
+>>> h1.Draw()
+>>> h2.Draw("same")
+>>> h3.Draw("same")
+>>> h4.Draw("same")
+>>> f.Draw("same")
+
+"""
+__author__ = "Jeremy P. Lopez"
+__date__ = "June 2017"
+__copyright__ = "(c) June 2017, Jeremy P. Lopez"
+
+
 from ROOT import TH1F
 from ROOT import TCanvas
 from ROOT import kRed, kBlue, kGreen, kViolet, kBlack
@@ -15,6 +48,23 @@ import time
 import numpy as np
 
 def CompareMethods():
+    """ Compare the different sampling methods.
+
+Tests uniform and Maxwell-Boltzmann weighted throws and unweighted
+throws with rejection sampling and the Metropolis-Hastings algorithm.
+
+Outputs:
+    Timing information from a large number of throws for each method.
+
+Returns:
+    (TH1F,TH1F,TH1F,TH1F,TF1)
+    The histograms are in the order given above. The function is an
+    analytic approximation of the distribution and is the exact solution
+    for the spectrum with no form factor and no escape velocity.
+
+
+    """
+
     h1 = TH1F('unif','Uniform;E_{r} [keV];Rate [evts/sec]',100,0,200)
     h2 = TH1F('maxw','Maxwell;E_{r} [keV];Rate [evts/sec]',100,0,200)
     h3 = TH1F('ar','A/R;E_{r} [keV];Rate [evts/sec]',100,0,200)

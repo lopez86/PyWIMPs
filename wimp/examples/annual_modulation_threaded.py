@@ -1,4 +1,28 @@
-""" This example calculates the annual modulation of SI recoil events for 50 GeV WIMPs on xenon """
+""" annual_modulation_threaded.py
+
+This example calculates the annual modulation of SI recoil events 
+for 50 GeV WIMPs on xenon. No form factor or detector effects
+are considered here.
+
+This is identical to annual_modulation.py except it
+uses the multiprocessing package to create multiple threads
+for the calculations. This requires being careful with things
+like random number generators, which by default are global 
+objects and probably aren't thread-safe.
+
+Should run much faster than the non-threaded version.
+
+Example:
+
+>>> run_example()
+
+Matplotlib will display several plots of things like
+the total rate over time and the velocity.
+"""
+
+__author__ = 'Jeremy P. Lopez'
+__date__ = 'June 2017'
+__copyright__ = '(c) June 2017, Jeremy P. Lopez'
 
 from .. import units
 from .. import xsec
@@ -18,7 +42,18 @@ seeds = [198201, 418776, 471693, 263639, 888106, 722914, 188371]
 vpts = np.array([225,230,235,240,245,250,260]) * units.km/units.sec
 
 def calc_rate(i):
+    """ We get the rates by interpolating from the velocity. 
+    
+    This function calculates the rate from one of our pre-set
+    velocity points. It also creates a new random number generator
+    to ensure thread safety.
 
+    Args:
+        i: The index of the velocity point and random number seed
+
+    Returns:
+        The ineteraction rate
+    """
     rnd = np.random.RandomState(seeds[i])
     ex = det.Experiment()
     # For thread safety
@@ -46,6 +81,26 @@ def calc_rate(i):
     return i,rate['Total'],rate['TotalErr']
 
 def AnnualModulation(tmin,tmax,npts,pool_size=4):
+    """ Calculates the event rate for the given time period.
+
+    Args:
+        tmin (Datetime): The start time
+        tmax (Datetime): The end time
+        npts: The number of points
+        pool_size: The number of processes to run concurrently
+                   Default: 4
+
+    Returns: (note: return values are pretty ugly here)
+        Time points
+        Interaction rates (per day)
+        Estimated rate uncertainties
+        WIMP velocities
+        Velocity points used for interpolation
+        Rates at the interpolation points
+        Rate errors at the interpolation points
+   
+    """
+
 
     utc_start = dt.datetime(1970,1,1,0,0,0,tzinfo = dt.timezone.utc)
     start_time = (tmin - utc_start).total_seconds()
@@ -81,17 +136,25 @@ def AnnualModulation(tmin,tmax,npts,pool_size=4):
         interp_val = np.interp(v[i] * units.km/units.sec,vpts,rate_idx)
         idx0 = int(interp_val)
         frac = interp_val % 1
-        rate_err[i] = np.sqrt( frac**2 * rate_pt_err[idx0+1]**2 + (1-frac)**2 * rate_pt_err[idx0]**2   )
+        rate_err[i] = np.sqrt( frac**2 * rate_pt_err[idx0+1]**2 
+                               + (1-frac)**2 * rate_pt_err[idx0]**2)
         
     return pts,rates,rate_err,v,vpts,rate_pts,rate_pt_err
 
 def run_example():
+    """ Gets the annual modulation signal for 2016 and 2017.
+
+    Runs AnnualModulation()
+    Creates a number of matplotlib plots and displays them.
+    """
     tmin = dt.datetime(2016,1,1,0,0,0,tzinfo = dt.timezone.utc)
     tmax = dt.datetime(2018,1,1,0,0,0,tzinfo = dt.timezone.utc)
    
-    times,rates,rate_err,v,vpts,rate_pts,rate_pt_err = AnnualModulation(tmin,tmax,200)
+    times,rates,rate_err,v,vpts,rate_pts,rate_pt_err = \
+                AnnualModulation(tmin,tmax,200)
     #return
-    dates = [dt.datetime.fromtimestamp(ts,tz=dt.timezone.utc) for ts in times]
+    dates = [dt.datetime.fromtimestamp(ts,tz=dt.timezone.utc) 
+             for ts in times]
     vpts = vpts * units.sec / units.km
     fig = plt.figure(1)
     ax = fig.add_subplot(111)
@@ -177,7 +240,5 @@ def run_example():
 
     ax.grid(True)
     fig.autofmt_xdate()
-
-
 
     plt.show()
