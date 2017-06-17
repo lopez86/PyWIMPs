@@ -10,6 +10,7 @@ __copyright__ = '(c) 2017, Jeremy P. Lopez'
 
 from . import FormFactor
 from .. import units
+import numpy as np
 
 class HelmFormFactor(FormFactor):
     """
@@ -79,7 +80,7 @@ class HelmFormFactor(FormFactor):
         self.rn = np.sqrt(self.c*self.c + 7./3 * \
                   np.pi * np.pi * self.a * self.a - \
                   5 * self.s * self.s)
-        self.rms = np.sqrt(0.6 * rn*rn + 3 * self.s * self.s )
+        self.rms = np.sqrt(0.6 * self.rn*self.rn + 3 * self.s * self.s )
 
 
     def ff2(self,Q2):

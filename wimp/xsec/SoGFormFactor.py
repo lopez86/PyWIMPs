@@ -13,6 +13,10 @@ __author__ = 'Jeremy P. Lopez'
 __date__ = 'June 2017'
 __copyright__ = '(c) 2017, Jeremy P. Lopez'
 
+
+import numpy as np
+from .. import units
+from .FormFactor import FormFactor
 _u = units.fm / units.hbarc
 
 SoGRi = {
@@ -89,7 +93,7 @@ class SoGFormFactor(FormFactor):
     def initialize(self):
         """ Get the normalization constant. """
         self.F0 = 1
-        f0 = self.ff2(0):
+        f0 = self.ff2(0)
         self.F0 = f0
 
     def set_data(self,data):
@@ -127,7 +131,7 @@ class SoGFormFactor(FormFactor):
         q = np.sqrt(Q2)
 
         F = 0
-        for i in range(1,len(_data[1].size+1):
+        for i in range(1,len(_data[1].size+1)):
             F += _data[2][i-1] / (1 + 2 *(_data[1][i-1]/gamma)**2)  \
                  * (np.cos(q * self._data[1][i-1]) 
                     + 2 * (self._data[1][i-1]/gamma)**2

@@ -51,7 +51,7 @@ class Sample:
         return self._Er     
 
     @Er.setter
-    def set_Er(self,er):
+    def Er(self,er):
         """ Set the recoil energy.
 
             Args:
@@ -66,7 +66,7 @@ class Sample:
         return self._recoil_vec
 
     @recoil_vec.setter
-    def set_recoil_vec(self,rv):
+    def recoil_vec(self,rv):
         """ Set the recoil direction vector.
 
             Args:

@@ -51,15 +51,15 @@ class InteractionModel:
         return self._rand
 
     @random.setter
-    def set_random(self,r):
+    def random(self,r):
         """ Set the random number generator.
 
             Args:
                 r: (Numpy RandomState)
         """
         self._rand = r
-        self.cross_section.set_random(r)
-        self.form_factor.set_random(r)
+        self.cross_section.random = r 
+        self.form_factor.random = r
  
     def set_params(self,pars):
         """ Set parameters using a dictionary.
@@ -106,7 +106,7 @@ class InteractionModel:
         return self._total_xs
 
     @Mx.setter
-    def set_Mx(self,m):
+    def Mx(self,m):
         """ Set the WIMP mass
 
             Args:
@@ -116,7 +116,7 @@ class InteractionModel:
         self.cross_section.Mx = m
 
     @Mt.setter
-    def set_Mt(self,m):
+    def Mt(self,m):
         """ Set the target nucleus mass
 
             Args:
@@ -126,7 +126,7 @@ class InteractionModel:
         self.cross_section.Mt = m
 
     @Mtot.setter
-    def set_Mtot(self,m):
+    def Mtot(self,m):
         """ Set the detector fiducial mass
 
             Args:
@@ -136,7 +136,7 @@ class InteractionModel:
         self._Mtot = m
 
     @total_xs.setter
-    def set_total_xs(self,xs):
+    def total_xs(self,xs):
         """ Set the total cross section
 
             Args:

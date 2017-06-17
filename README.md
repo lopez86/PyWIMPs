@@ -29,32 +29,34 @@ It is very likely that the following will eventually be needed:
  * Standard dark matter-nucleus interaction model:
    * Standard Halo Model: Truncated Maxwellian velocity distribution
    * Isotropic cross section
-   * Several basic form factors
+   * Various form factors
+   * Nucleus to nucleon normalization
  * Monte Carlo simulation of recoils using the standard halo and cross section assumptions
    * Weighted sampling for building histograms and distributions, calculating weights, etc. (one throwing uniformly over a region and another drawing from a Maxwell-Boltzmann distribution)
    * Un-weighted event-by-event sampling using (1) a basic rejection sampling method and (2) a Markov Chain Monte Carlo (MCMC) using the Metropolis-Hastings algorithm.
-
+ * Some basic limit setting for a simple counting analysis:
+   * Background-free counting
+   * Feldman-Cousins confidence intervals
+   * CLs limits
+ * Detector effects: very basic classes for:
+   * Efficiency curves
+   * Reconstruction effects
+   * Realistically, the user will need to make custon classes for their experiment
 ## Future Features
  * Nucleus to nucleon normalization
  * Data for common nuclei
  * Implementation of some basic limit-setting
-   * Background-free counting
-   * Feldman-Cousins procedure
    * Maximum Gap (Yellen)
    * Annual modulation limits
- * Detector effects
-   * Efficiency curves
-   * Reconstruction effects (smearing of reconstructed properties)
+   * Bayesian limits
+   * Parameter fitting for positive results
+   * Detector/model systematics treatment (easier in Bayesian case?)
  * Examples of various plots and calculations
    * Recoil distribution skymaps
    * Sidereal modulation skymaps
-   * Recoil energy distributions
-   * Annual modulation rate
  * References and readings on dark matter
  * Maybe/Might be fun
    * Simplified parameterized simulation of a LUX or XENON type detector
    * Inelastic dark matter
    * Q^2-dependent cross sections
    * Coherent neutrino elastic scattering
-
-

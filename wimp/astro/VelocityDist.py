@@ -39,7 +39,7 @@ class VelocityDist:
         return self._rand
 
     @random.setter
-    def set_random(self,r):
+    def random(self,r):
         """ Set the random number generator.
  
             Args:

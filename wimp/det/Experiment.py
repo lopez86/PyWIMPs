@@ -44,9 +44,9 @@ class Experiment:
     """
     def __init__(self):
         """ Initialize to some default values. """
-        self._rand = random
-        self.astro_model = AstroModel()
-        self.interaction = InteractionModel()
+        self._rand = np.random
+        self._astro_model = AstroModel()
+        self._interaction = InteractionModel()
         self.rate_sampler = \
                  MaxwellWeightedSampler(self.astro_model, \
                                         self.interaction)
@@ -54,7 +54,7 @@ class Experiment:
                  AcceptRejectSampler(self.astro_model, \
                                      self.interaction)
 
-        self.detector_model = DetectorModel()
+        self._detector_model = DetectorModel()
 
         self.exposure = 300. * units.day
         self.Emin = 0

@@ -25,11 +25,11 @@ class Nucleus:
     """
     
     def __init__(self,pars=None):
-    """ Initialize the object.
-
-        Args:
-            pars: {string}
-    """
+        """ Initialize the object.
+    
+            Args:
+                pars: {string}
+        """
         if pars is not None:
             self.set_params(pars)
         else:
@@ -83,7 +83,7 @@ class Nucleus:
         return self.A - self.Z
 
     @property
-    def J(self)
+    def J(self):
         """ The nuclear spin."""
         return self.spin
 

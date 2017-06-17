@@ -64,7 +64,7 @@ class UniformWeightedSampler:
         return self._rand
 
     @random.setter
-    def set_random(self,r,set_models=False):
+    def random(self,r,set_models=False):
         """ Set the random number generator.
      
             Args:

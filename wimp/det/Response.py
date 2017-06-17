@@ -60,7 +60,7 @@ class Response:
         """
         return sample
 
-    def weighted_throw(self,s):
+    def weighted_throw(self,sample):
         """ Perform random throw over the parameter space and
             return a sample with detector effects added. Here,
             throws do not need to follow the distribution and
@@ -87,7 +87,7 @@ class GaussianResponse(Response):
     """
     def __init__(self):
         """ Initialize with a 10% resolution."""
-        self.set_random(np.random)
+        self.random = np.random
         self.sigma = 0.1
 
     def set_params(self,pars):

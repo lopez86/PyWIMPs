@@ -53,7 +53,7 @@ class AstroModel:
         return self._rand
 
     @random.setter
-    def set_random(self,r):
+    def random(self,r):
         """ Set the random number generator. 
  
             Args: 
@@ -75,6 +75,7 @@ class AstroModel:
                 rhox: The dark matter mass density at Earth
         """
         if 'vE' in pars.keys():
+            pars['vE']
             self.vE = pars['vE']
         if 'v0' in pars.keys():
             self.v0 = pars['v0']
@@ -90,7 +91,7 @@ class AstroModel:
         return self._vE
  
     @vE.setter
-    def set_vE(self,ve):
+    def vE(self,ve):
         """ Set the Earth velocity 3-vector.
     
             Args:
@@ -105,7 +106,7 @@ class AstroModel:
         return self._v0
 
     @v0.setter
-    def set_v0(self,v):
+    def v0(self,v):
         """ Set the dispersion velocity.
   
             Args:
@@ -120,7 +121,7 @@ class AstroModel:
         return self._vesc
 
     @vesc.setter
-    def set_vesc(self,v):
+    def vesc(self,v):
         """ Set the galactic escape velocity.
   
             Args:
@@ -135,7 +136,7 @@ class AstroModel:
         return self._wimp_density
 
     @wimp_density.setter
-    def set_wimp_density(self,rho):
+    def wimp_density(self,rho):
         """ Set the WIMP mass density at Earth.
   
             Args:

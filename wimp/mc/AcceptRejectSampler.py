@@ -10,6 +10,8 @@ import numpy as np
 from .sample import Sample
 from .. import mathtools
 from .. import units
+
+
 class AcceptRejectSampler:
     """ Class to perform rejection sampling on the standard
         halo and cross section model.
@@ -59,7 +61,7 @@ class AcceptRejectSampler:
         return self._rand
 
     @random.setter
-    def set_random(self,r,set_models=False):
+    def random(self,r,set_models=False):
         """ Set the random number generator.
             Args: 
                 r (Numpy RandomState)
