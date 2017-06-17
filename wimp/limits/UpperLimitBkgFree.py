@@ -156,4 +156,4 @@ def upper_limit(N_exp=0,CL=0.9):
         fn_last[1] = fn_last[2]
         fn_last[2] = fn
         
-    return n_limit
+    return 0,n_limit

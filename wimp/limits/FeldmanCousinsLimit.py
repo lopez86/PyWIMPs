@@ -110,7 +110,7 @@ class FeldmanCousinsLimit:
         rate = rate / N
         return rate
 
-    def get_interval(self,Mx,N_exp = 0,N_bkg=0, CL=0.9):
+    def get_limit(self,Mx,N_exp = 0,N_bkg=0, CL=0.9):
         """ Get the confidence interval.
             Default is 0 events with a 90% confidence level.
 
