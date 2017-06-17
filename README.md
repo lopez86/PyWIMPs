@@ -1,10 +1,8 @@
-# WimpSim
+# PyWIMPs
 
 This package contains various python tools for simulation &amp; analysis
-of dark matter direct detection experiments.
-
-Everything is still under construction. 
-The goal is for the code here to all be in Python 3 with standard Python packages such as NumPy and SciPy. I might make a ROOT interface but the core code should be independent of ROOT. This ensures that the code will be easy to install and use by non-experts.
+of dark matter direct detection experiments. If you're a member of the 
+HEP or astro community and might want to contribute something, let me know.
 
 ## Requirements
 
@@ -13,6 +11,7 @@ So far, the following dependencies are needed:
  * Python 3 (likely 3.4 or above) - primary language
  * NumPy - numerical calculations
  * AstroPy - astrophysics libraries (coordinate transforms)
+ * SciPy - used for various statistics things
 
 For the examples, you will also need (depending on the specific example):
  * Matplotlib
@@ -20,7 +19,6 @@ For the examples, you will also need (depending on the specific example):
 
 It is very likely that the following will eventually be needed:
  
- * SciPy - more numerical tools
  * Basemap - extra map plotting tools for Matplotlib
 
 
@@ -42,10 +40,16 @@ It is very likely that the following will eventually be needed:
    * Efficiency curves
    * Reconstruction effects
    * Realistically, the user will need to make custon classes for their experiment
+ * Examples:
+   * Running threaded processes
+   * Annual modulation curves
+   * Limit plot generation 
+   * Comparison of sampling methods
+   * MCMC tuning
+
 ## Future Features
- * Nucleus to nucleon normalization
  * Data for common nuclei
- * Implementation of some basic limit-setting
+ * More limit setting stuff
    * Maximum Gap (Yellen)
    * Annual modulation limits
    * Bayesian limits
