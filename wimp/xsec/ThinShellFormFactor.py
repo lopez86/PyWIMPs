@@ -5,6 +5,7 @@ The form factor of a thin shell charge distribution.
 """
 from . import FormFactor
 from .. import units
+import numpy as np
 
 class ThinShellFormFactor(FormFactor):
     """
@@ -32,7 +33,7 @@ class ThinShellFormFactor(FormFactor):
         self.a = 1.0 * units.fm
         self.b = 0
         self.calculate_params()
-
+        self.random = np.random
 
     def set_params(self,pars):
         """ Set parameters from a dictionary.

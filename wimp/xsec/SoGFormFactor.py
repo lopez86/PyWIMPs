@@ -89,12 +89,14 @@ class SoGFormFactor(FormFactor):
         """
         self._data = data
         self.F0 = 1
+        self.random = np.random
 
     def initialize(self):
         """ Get the normalization constant. """
         self.F0 = 1
         f0 = self.ff2(0)
         self.F0 = f0
+ 
 
     def set_data(self,data):
         """ Set the data.

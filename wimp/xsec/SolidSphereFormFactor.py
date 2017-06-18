@@ -10,6 +10,7 @@ __copyright__ = '(c) 2017, Jeremy P. Lopez'
 
 from . import FormFactor
 from .. import units
+import numpy as np
 
 class SolidSphereFormFactor(FormFactor):
     """
@@ -37,7 +38,7 @@ class SolidSphereFormFactor(FormFactor):
         self.a = 1.0 * units.fm
         self.b = 0
         self.calculate_params()
-
+        self.random = np.random
 
     def set_params(self,pars):
         """ Set parameters from a dictionary.

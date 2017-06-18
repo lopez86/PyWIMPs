@@ -10,7 +10,7 @@ __copyright__ = '(c) 2017, Jeremy P. Lopez'
 
 from .FormFactor import FormFactor
 from .. import units
-
+import numpy as np
 
 class DipoleFormFactor(FormFactor):
     """
@@ -27,7 +27,7 @@ class DipoleFormFactor(FormFactor):
     """
     def  __init__(self):
         """Initialize with a scale of 1 GeV """
-        
+        self.random = np.random       
         self.scale = 1.0 * units.GeV
 
     def set_params(self,pars):

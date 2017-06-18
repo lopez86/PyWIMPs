@@ -25,6 +25,7 @@ class ExpoFormFactor(FormFactor):
     def __init__(self):
         """ Initialize to a scale of 1 GeV"""
         self.scale = 1.0 * units.GeV
+        self.random = np.random
 
     def set_params(self,pars):
         """ Set parameters from a dictionary.

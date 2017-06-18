@@ -17,7 +17,7 @@ from .. import units
 
 import numpy as np
 
-WSdata = {
+WSData = {
         (11,23):(2.9393*units.fm,2.994*units.fm,0.523*units.fm),
         (53,127):(5.5931*units.fm,4.749*units.fm,0.523*units.fm),
         (54,129):(5.6315*units.fm,4.776*units.fm,0.523*units.fm),
@@ -42,7 +42,7 @@ class WSFormFactor:
     identical with the correct choice of parameters.
 
     """
-    def __init__(self, data=WSData[(11,23])):
+    def __init__(self, data=WSData[(11,23)]):
         """ Initialize with argon as the default. 
  
             Args:
@@ -56,6 +56,8 @@ class WSFormFactor:
 
         self.F0 = 1
         self._tol = 1e-4
+        self.random = np.random
+ 
     def initialize(self):
         """ Get the normalization constant. """
         self.F0 = 1

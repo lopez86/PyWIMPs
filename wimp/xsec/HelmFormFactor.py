@@ -41,7 +41,7 @@ class HelmFormFactor(FormFactor):
         self.a = 0.52 * units.fm
         self.s = 0.9 * units.fm
         self.calculate_params()
-
+        self.random = np.random
 
     def set_params(self,pars):
         """ Set parameters from a dictionary.
