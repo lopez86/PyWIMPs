@@ -58,7 +58,7 @@ class DetectorModel:
         return self._rand
     
     @random.setter
-    def set_random(self,r):
+    def random(self,r):
         """ Sets the random number generator from a Numpy
             RandomState or equivalent.
 
@@ -67,8 +67,8 @@ class DetectorModel:
             
         """
         self._rand = r
-        self.efficiency.set_random(r)
-        self.response.set_random(r)
+        self.efficiency.random = r
+        self.response.random = r
         
 
 

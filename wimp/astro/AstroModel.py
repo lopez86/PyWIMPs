@@ -60,7 +60,7 @@ class AstroModel:
                 r: (Numpy RandomState)
         """
         self._rand = r
-        self.velocity.set_random(r)
+        self.velocity.random = r
 
     def set_params(self,pars):
         """ Set the parameters using a dictionary.

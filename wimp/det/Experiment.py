@@ -109,18 +109,18 @@ class Experiment:
         return self._rand
  
     @random.setter
-    def set_random(self,r):
+    def random(self,r):
         """ Set the random number generator.
 
             Args:
                 r (Numpy RandomState or equivalent)
         """
         self._rand = r
-        self.detector_model.set_random(r)
-        self.astro_model.set_random(r)
-        self.interaction.set_random(r)
-        self.rate_sampler.set_random(r)
-        self.event_sampler.set_random(r)
+        self.detector_model.random = r
+        self.astro_model.random = r
+        self.interaction.random = r
+        self.rate_sampler.random = r
+        self.event_sampler.random = r
 
     @property
     def astro_model(self):
@@ -203,13 +203,13 @@ class Experiment:
 
         for i in range(N):
             s = self.rate_sampler.sample()
-            self.nrec_total += s.weight
-            self.nrec_total_err += s.weight**2
+            self.nrec_total += s.gen_weight
+            self.nrec_total_err += s.gen_weight**2
             if self.Emin <= s.Er < self.Emax:
-                self.nrec_true += s.weight
-                self.nrec_true_err += s.weight**2 
+                self.nrec_true += s.gen_weight
+                self.nrec_true_err += s.gen_weight**2 
             s = self.detector_model.weighted_throw(s)
-            if self.Emin <= s.Er < self.Emax:
+            if self.Emin <= s.Er_reco < self.Emax:
                 self.nrec_meas += s.weight 
                 self.nrec_meas_err += s.weight**2
 

@@ -1,3 +1,36 @@
+""" lux_limit.py
+
+This example shows how to produce a dark matter limit plot
+using one of the simple counting experiment limit methods.
+
+The data here is meant to approximate the parameters of the
+LUX 2014-2016 run, which as of 2017 has produced the 
+best WIMP-nucleon spin-independent limit of any direct
+detection experiment.
+
+This performs a raster scan over WIMP mass and sets a
+90% upper limit at each mass point. 
+
+Some tools used here include:
+
+ * Rate calculation with detector effects
+ * Nucleus to Nucleon normalization
+ * Using the Experiment class to control calculations
+ * Frequentist Poisson upper limit
+
+Example:
+
+>>> lux_limits()
+
+  Produces a limit plot
+
+"""
+
+__author__ = 'Jeremy P. Lopez'
+__date__ = 'June 2017'
+__copyright__ = '(c) 2017, Jeremy P. Lopez'
+
+
 from ..det.Experiment import Experiment
 from ..xsec.HelmFormFactor import HelmFormFactor
 from ..det.Efficiency import Efficiency
@@ -14,7 +47,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 class lux_efficiency(Efficiency):
-    """Very approximate empirical formulat to fit the rough
+    """Very approximate empirical formula to fit the rough
        shape of the efficiency curve in their most recent paper
        except for the drop-off in the efficiency above ~50 keVr"""
     def __init__(self):
@@ -28,11 +61,15 @@ class lux_efficiency(Efficiency):
         return (1 - np.exp(- (Er/self.p[2])**4)) / \
                (1 + np.exp(- (Er - self.p[0])/self.p[1]))
     
-# We'll just leave the response as a Gaussian for now. That
+# We'll just leave the response alone for now. That
 # shouldn't matter too much for the limits
 
 
 def lux_limits():
+    """ This function actually produces the limit plot.
+        It could be made much faster using the
+        multiprocessing module.
+    """
     A = 131
     pars = {'AtomicNumber':A,
             'XS':1e-40 * units.cm**2,
@@ -84,7 +121,7 @@ def lux_limits():
 #    print(mass_grid)
 #    print(xs_pts)
 
-
+#   Example output if you just want to quickly see a plot
 #    xs_pts = np.array([  1.24296194e-45,   5.47519831e-46,   2.92874654e-46,   1.88419866e-46,
 #   1.40448798e-46,   1.17375261e-46,   1.08433872e-46,   1.08367388e-46,
 #   1.16197258e-46,   1.30532407e-46,   1.52182663e-46,   1.79776221e-46,

@@ -29,7 +29,8 @@ class Response:
         """ The random number generator. """
         return self._rand
 
-    def set_random(self,r):
+    @random.setter
+    def random(self,r):
         """ Set the random number generator.
 
             Args:
@@ -89,6 +90,7 @@ class GaussianResponse(Response):
         """ Initialize with a 10% resolution."""
         self.random = np.random
         self.sigma = 0.1
+        self.mean = 1
 
     def set_params(self,pars):
         """ Set parameters from a dictionary .
@@ -101,6 +103,8 @@ class GaussianResponse(Response):
         """
         if 'RespSigma' in pars.keys():
             self.sigma = pars['RespSigma']
+        if 'RespMean' in pars.keys():
+            self.mean = pars['RespMean']
 
     def unweighted_throw(self,s):
         """ Perform random throw over the distribution and
@@ -114,7 +118,7 @@ class GaussianResponse(Response):
                 sample with detector response added
     
         """
-        s.Er_reco = self._rand.normal(s.Er,self.sigma * s.Er)
+        s.Er_reco = self._rand.normal(s.Er * self.mean,self.sigma * s.Er)
         return s
 
     def weighted_throw(self,s):
@@ -131,5 +135,5 @@ class GaussianResponse(Response):
                 sample with detector response added
     
         """
-        s.Er_reco = self._rand.normal(s.Er,self.sigma * s.Er)
+        s.Er_reco = self._rand.normal(s.Er * self.mean,self.sigma * s.Er)
         return s
