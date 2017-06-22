@@ -1,4 +1,4 @@
-""" UpperLimitBkgFree.py
+""" UpperLimitBkgFree
 
     Calculate frequentist upper limits given an all-signal
     (background-free) model.
@@ -108,7 +108,7 @@ class UpperLimitBkgFree:
         self.model.interaction.Mx = Mx
         rate = self.get_rate()
 
-        n_limit, fn = upper_limit(N_exp, CL)
+        n_limit, fn = poisson_freq_ul(N_exp, CL)
         xs_limit = n_limit * \
                    self.model.cross_section.total_xs / rate
         return xs_limit, fn

@@ -16,11 +16,7 @@ So far, the following dependencies are needed:
 For the examples, you will also need (depending on the specific example):
  * Matplotlib
  * PyROOT (ROOT with Python bindings)
-
-It is very likely that the following will eventually be needed:
- 
  * Basemap - extra map plotting tools for Matplotlib
-
 
 ## Features
 
