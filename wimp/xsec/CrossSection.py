@@ -128,7 +128,7 @@ class CrossSection:
                 Ex: WIMP kinetic energy 
                 Er: Nuclear recoil kinetic energy
         """
-        return np.sqrt(0.5 * Er / self.MaxEr(Ex) )
+        return np.sqrt(Er / self.MaxEr(Ex) )
 
     def ErLab(self,Ex,cosTh):
         """ Nuclear recoil kinetic energy
@@ -137,7 +137,7 @@ class CrossSection:
                 Ex: WIMP kinetic energy
                 cosTh: Lab frame angle - cos(theta)
         """
-        return 2 * self.MaxEr(Ex) * cosTh * cosTh
+        return self.MaxEr(Ex) * cosTh * cosTh
 
     def cosThetaCMFromEr(self,Ex,Er):
         """ Center of mass angle
@@ -161,7 +161,7 @@ class CrossSection:
             Args:
                 cosTh: Lab frame angle [cos(theta)]
         """
-        return 4 * cosTh*cosTh - 1
+        return 2 * cosTh*cosTh - 1
 
     def ErFromCosThetaCM(self,Ex,cosTh):
         """ Nuclear recoil kinetic energy
@@ -179,4 +179,4 @@ class CrossSection:
             Args: 
                 cosTh: Center of mass angle [cos(theta)] 
         """
-        return 0.5 * np.sqrt( 1 + cosTh)
+        return np.sqrt( 0.5*(1 + cosTh))
