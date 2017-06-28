@@ -61,7 +61,7 @@ class InelasticCS(CrossSection):
         return self.MuPrime * self.deltaM / self.Mx
 
     @property
-    def VthresholdCM(self)
+    def VthresholdCM(self):
         """ WIMP velocity threshold in CM frame"""
         return self.PthresholdCM / self.Mx
 
@@ -76,7 +76,7 @@ class InelasticCS(CrossSection):
         return self.Mx * self.deltaM /self.Mu
 
     @property
-    def Vthreshold(self)
+    def Vthreshold(self):
         """ WIMP velocity threshold in lab frame"""
         return units.speed_of_light 
                * np.sqrt(2*self.deltaM/self.Mu)
@@ -157,7 +157,7 @@ class InelasticCS(CrossSection):
               "implemented\n")
         return -1
 
-    def cosThetaCMFromCosTheta(self,Ex,cosTh)
+    def cosThetaCMFromCosTheta(self,Ex,cosTh):
         """ Not implemented at this point. CM recoil angle as
             function of recoil angle
 

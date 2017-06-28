@@ -1,4 +1,5 @@
 from .CrossSection import CrossSection
+from .InelasticCS import InelasticCS
 from .DipoleFormFactor import DipoleFormFactor
 from .EngelFormFactor import EngelFormFactor
 from .ExpoFormFactor import ExpoFormFactor
