@@ -78,7 +78,7 @@ class InelasticCS(CrossSection):
     @property
     def Vthreshold(self):
         """ WIMP velocity threshold in lab frame"""
-        return units.speed_of_light 
+        return units.speed_of_light \
                * np.sqrt(2*self.deltaM/self.Mu)
 
     @property
