@@ -73,13 +73,13 @@ class InteractionModel:
                 Mtot: Total detector fiducial mass
                 XS: Total cross section
         """
-        if 'Mx' in pars.keys():
+        if 'Mx' in pars:
             self.Mx = pars['Mx']
-        if 'Mt' in pars.keys():
+        if 'Mt' in pars:
             self.Mt = pars['Mt']
-        if 'Mtot' in pars.keys():
+        if 'Mtot' in pars:
             self.Mtot = pars['Mtot']
-        if 'XS' in pars.keys():
+        if 'XS' in pars:
             self.total_xs = pars['XS']
 
         self.cross_section.set_params(pars)

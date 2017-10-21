@@ -42,7 +42,7 @@ class InelasticCS(CrossSection):
         """
         super(InelasticCS,self).set_params(pars)
 
-        if 'MassSplitting' in pars.keys():
+        if 'MassSplitting' in pars:
             self.deltaM = pars['MassSplitting']
 
     @property

@@ -57,7 +57,7 @@ class Efficiency:
                 EffMax: the efficiency
 
         """
-        if 'EffMax' in pars.keys():
+        if 'EffMax' in pars:
             self.eff = pars['EffMax']
 
     def efficiency(self,sample):
@@ -98,11 +98,11 @@ class LogisticEfficiency(Efficiency):
                 EffErScale: the energy scale
         """
       
-        if 'EffMax' in pars.keys():
+        if 'EffMax' in pars:
             self.eff = pars['EffMax']
-        if 'EffEr0' in pars.keys():
+        if 'EffEr0' in pars:
             self.x0 = pars['EffEr0']
-        if 'EffErScale' in pars.keys():
+        if 'EffErScale' in pars:
             self.xscale = pars['EffErScale']
 
     def efficiency(self,sample):

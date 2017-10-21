@@ -101,9 +101,9 @@ class GaussianResponse(Response):
             Parameters:
                 RespSigma: The fractional energy uncertainty
         """
-        if 'RespSigma' in pars.keys():
+        if 'RespSigma' in pars:
             self.sigma = pars['RespSigma']
-        if 'RespMean' in pars.keys():
+        if 'RespMean' in pars:
             self.mean = pars['RespMean']
 
     def unweighted_throw(self,s):

@@ -102,9 +102,9 @@ class MCMCSampler:
                MCMCNburnin: The number of throws to use on 
                             initialization to avoid bias
         """
-        if 'MCMCSigma' in pars.keys():
+        if 'MCMCSigma' in pars:
             self.sigma = pars['MCMCSigma']
-        if 'MCMCNburnin' in pars.keys():
+        if 'MCMCNburnin' in pars:
             self.nburnin = pars['MCMCnburnin']
         if set_models:
             self.astro_model.set_params(pars)

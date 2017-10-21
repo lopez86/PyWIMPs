@@ -110,7 +110,7 @@ def FBFormFactor(FormFactor):
                 FBData: The data in the correct format and in units
                         of inverse energy.
         """
-        if 'FBData' in pars.keys():
+        if 'FBData' in pars:
             self._data = pars['FBData']
 
     def ff2(self,Q2):

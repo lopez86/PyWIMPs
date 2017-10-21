@@ -74,14 +74,14 @@ class AstroModel:
                 vesc: Galactic escape velocity at Earth
                 rhox: The dark matter mass density at Earth
         """
-        if 'vE' in pars.keys():
+        if 'vE' in pars:
             pars['vE']
             self.vE = pars['vE']
-        if 'v0' in pars.keys():
+        if 'v0' in pars:
             self.v0 = pars['v0']
-        if 'vesc' in pars.keys():
+        if 'vesc' in pars:
             self.vesc = pars['vesc']
-        if 'rhox' in pars.keys():
+        if 'rhox' in pars:
             self.wimp_density = pars['rhox']
         self.velocity.set_params(pars)
         

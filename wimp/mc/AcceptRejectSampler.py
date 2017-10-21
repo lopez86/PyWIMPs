@@ -85,7 +85,7 @@ class AcceptRejectSampler:
                 AccRejMaxIter: Set the maximum # of
                                iterations before stopping
         """
-        if 'AccRejMaxIter' in pars.keys():
+        if 'AccRejMaxIter' in pars:
             pars.max_iter = pars['AccRejMaxIter']
         if set_models:
            self.astro_model.set_params(pars)

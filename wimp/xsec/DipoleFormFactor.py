@@ -39,7 +39,7 @@ class DipoleFormFactor(FormFactor):
             Parameters:
                 DipoleFFScale
         """
-        if 'DipoleFFScale' in pars.keys:
+        if 'DipoleFFScale' in pars:
           self.scale = pars['DipoleFFScale']
 
     def ff2(self,Q2):

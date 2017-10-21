@@ -81,13 +81,13 @@ class Experiment:
                 ExpNSamples: Number of samples
 
         """
-        if 'Exposure' in pars.keys():
+        if 'Exposure' in pars:
             self.exposure = pars['Exposure']
-        if 'ExpEmin' in pars.keys():
+        if 'ExpEmin' in pars:
             self.Emin = pars['ExpEmin']
-        if 'ExpEmax' in pars.keys():
+        if 'ExpEmax' in pars:
             self.Emax = pars['ExpEmax']
-        if 'ExpNSamples' in pars.keys():
+        if 'ExpNSamples' in pars:
             self.Nsamples = pars['ExpNSamples']
         self.detector_model.set_params(pars)
         self.astro_model.set_params(pars)

@@ -119,7 +119,7 @@ class SoGFormFactor(FormFactor):
                         of inverse energy.
         """
 
-        if 'SoGData' in pars.keys():
+        if 'SoGData' in pars:
             self._data = pars['SoGData']
 
     def ff2(self,Q2):

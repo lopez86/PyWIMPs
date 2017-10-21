@@ -46,11 +46,11 @@ class ThinShellFormFactor(FormFactor):
                 SolidSphereFFA: a 
                 SolidSphereFFB: b
         """
-        if 'AtomicNumber' in pars.keys():
+        if 'AtomicNumber' in pars:
             self.A = pars['AtomicNumber']
-        if 'ThinShellFFA' in pars.keys():
+        if 'ThinShellFFA' in pars:
             self.a = pars['ThinShellFFA']
-        if 'ThinShellFFB' in pars.keys():
+        if 'ThinShellFFB' in pars:
             self.b = pars['ThinShellFFB']
         self.calculate_params()
 

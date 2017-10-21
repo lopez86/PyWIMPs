@@ -51,11 +51,11 @@ class SolidSphereFormFactor(FormFactor):
                 SolidSphereFFA: a 
                 SolidSphereFFB: b
         """
-        if 'AtomicNumber' in pars.keys():
+        if 'AtomicNumber' in pars:
             self.A = pars['AtomicNumber']
-        if 'SolidSphereFFA' in pars.keys():
+        if 'SolidSphereFFA' in pars:
             self.a = pars['SolidSphereFFA']
-        if 'SolidSphereFFB' in pars.keys():
+        if 'SolidSphereFFB' in pars:
             self.b = pars['SolidSphereFFB']
         self.calculate_params()
 

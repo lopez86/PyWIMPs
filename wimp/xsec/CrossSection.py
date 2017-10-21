@@ -68,11 +68,11 @@ class CrossSection:
                 Mt: Target nucleus mass
                 Mx: WIMP mass
         """
-        if 'XS' in pars.keys():
+        if 'XS' in pars:
           self.totalxs = pars['XS']
-        if 'Mt' in pars.keys():
+        if 'Mt' in pars:
           self.Mt = pars['Mt']
-        if 'Mx' in pars.keys():
+        if 'Mx' in pars:
           self.Mx = pars['Mx']
 
     def dSdOmegaCM(self):

@@ -49,11 +49,11 @@ class EngelFormFactor(FormFactor):
                 EngelFFRnA: a
                 EngelFFRnB: b
         """
-        if 'AtomicNumber' in pars.keys():
+        if 'AtomicNumber' in pars:
             self.A = pars['AtomicNumber']
-        if 'EngelFFRnA' in pars.keys():
+        if 'EngelFFRnA' in pars:
             self.a = pars['EngelFFRnA']
-        if 'EngelFFRnB' in pars.keys():
+        if 'EngelFFRnB' in pars:
             self.b = pars['EngelFFRnB']
         self.calculate_params()
 

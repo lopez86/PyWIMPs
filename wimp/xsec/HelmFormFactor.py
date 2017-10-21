@@ -57,15 +57,15 @@ class HelmFormFactor(FormFactor):
                 HelmS: s
  
         """
-        if 'AtomicNumber' in pars.keys():
+        if 'AtomicNumber' in pars:
             self.A = pars['AtomicNumber']
-        if 'HelmCa' in pars.keys():
+        if 'HelmCa' in pars:
             self.ca = pars['HelmCa']
-        if 'HelmCb' in pars.keys():
+        if 'HelmCb' in pars:
             self.cb = pars['HelmCb']
-        if 'HelmA' in pars.keys():
+        if 'HelmA' in pars:
             self.a = pars['HelmA']
-        if 'HelmS' in pars.keys():
+        if 'HelmS' in pars:
             self.s = pars['HelmS']
 
         self.calculate_params()

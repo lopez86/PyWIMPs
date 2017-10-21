@@ -60,12 +60,12 @@ class VelocityDist:
         """
         # renormalize:
         renorm = False
-        if 'v0' in pars.keys():
+        if 'v0' in pars:
             self.v0 = pars['v0']
             renorm = True
-        if 'vE' in pars.keys():
+        if 'vE' in pars:
             self.vE = pars['vE']
-        if 'vesc' in pars.keys():
+        if 'vesc' in pars:
             self.vesc = pars['vesc'] 
             renorm = True
         if renorm:

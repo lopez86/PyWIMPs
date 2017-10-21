@@ -64,13 +64,15 @@ class CohNuCS(CrossSection):
                 pars: {string}
 
             Parameters:
-                XS: Total cross section
+                XS: Total cross section (has no effect)
                 Mt: Target nucleus mass
-                Mx: WIMP mass
+                Mx: WIMP mass (has no effect)
+                Qw: Nuclear weak charge
+                
         """
         super(CohNuCS,self).set_params(pars)
 
-        if 'Qw' in pars.keys():
+        if 'Qw' in pars:
             self.Qw = pars['Qw']
         
     def dSdOmegaCM(self):

@@ -84,13 +84,13 @@ class WSFormFactor:
                 WSData: The data in the correct format and in units
                         of inverse energy.
         """
-        if 'WSData' in pars.keys():
+        if 'WSData' in pars:
             self._data = pars['WSData']
-        if 'WSTol' in pars.keys():
+        if 'WSTol' in pars:
             self._tol = pars['WSTol']
-        if 'WSa' in pars.keys():
+        if 'WSa' in pars:
             self.a = pars['WSa']
-        if 'WSc' in pars.keys():
+        if 'WSc' in pars:
             self.c = pars['WSc']
 
     def _integrand(self,x,q):

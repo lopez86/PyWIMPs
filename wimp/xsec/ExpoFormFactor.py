@@ -37,7 +37,7 @@ class ExpoFormFactor(FormFactor):
                 ExpoFFScale
         """
 
-        if 'ExpoFFScale' in pars.keys():
+        if 'ExpoFFScale' in pars:
             self.scale = pars['ExpoFFScale']
 
     def ff2(self,Q2):
