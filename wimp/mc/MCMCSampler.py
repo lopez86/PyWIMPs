@@ -53,8 +53,7 @@ class MCMCSampler:
                    to throw velocities.
             nburnin: The number of samples to get
                      on initialization
-            Ntries: The number of throws used to get
-                    the last sample.
+            Ntries: The number of throws before we accept a new value
             lastv: The WIMP velocity for the last sample
             lastE: The recoil energy for the last sample
             lastP: The probability density for the last sample
@@ -140,6 +139,7 @@ class MCMCSampler:
         Ex = 0.5 * self.Mx * (vguess/units.speed_of_light)**2
         Emax = self.interaction.cross_section.MaxEr(Ex)
         self.lastE = self._rand.rand() * Emax
+        self.lastEx = Ex
         Q2 = 2 * self.Mt * self.lastE        
 
         self.lastP = (vguess
@@ -164,55 +164,52 @@ class MCMCSampler:
                 An unbiased sample
         """
 
-        self.Ntries = 0
-        done = False
         Ex = 0
-        while not done:
-            self.Ntries = self.Ntries + 1
-            # Propose a new WIMP velocity
-            vprop = self._rand.normal(self.lastv,self.sigma)
-            vec_mag = np.sqrt(vprop.dot(vprop))
-            ## Get the maximum energy
-            Ex = 0.5 * self.Mx * (vec_mag/units.speed_of_light)**2
-            Emax = self.interaction.cross_section.MaxEr(Ex)
 
-            ## There is a 1/Emax from the differential cross section
-            ## But:
+        self.Ntries = self.Ntries + 1
+        # Propose a new WIMP velocity
+        vprop = self._rand.normal(self.lastv,self.sigma)
+        vec_mag = np.sqrt(vprop.dot(vprop))
+        ## Get the maximum energy
+        Ex = 0.5 * self.Mx * (vec_mag/units.speed_of_light)**2
+        Emax = self.interaction.cross_section.MaxEr(Ex)
 
-            ## MH: q(last | this) p(this) /   q(this | last ) p(last)
-            ## The velocity throws are symmetric and phi doesn't matter here
-            ## 
-            ## --> q(Elast | Ethis) p(this) / q(Ethis | Elast) p(last)
-            ##  --> Emaxthis / Emaxlast *  p(this) / p(last)
-            ## p ~ vf(v)|F|^2 / Emax
-            ## --> vf(v)|F|^2
-            ## Acceptance only depends on E through the form factor
+        ## There is a 1/Emax from the differential cross section
+        ## But:
 
-            ## Propose an energy:
-            Eprop = self._rand.rand()*Emax
-            Q2 = 2 * self.Mt * Eprop
+        ## MH: q(last | this) p(this) /   q(this | last ) p(last)
+        ## The velocity throws are symmetric and phi doesn't matter here
+        ## 
+        ## --> q(Elast | Ethis) p(this) / q(Ethis | Elast) p(last)
+        ##  --> Emaxthis / Emaxlast *  p(this) / p(last)
+        ## p ~ vf(v)|F|^2 / Emax
+        ## --> vf(v)|F|^2
+        ## Acceptance only depends on E through the form factor
+
+        ## Propose an energy:
+        Eprop = self._rand.rand()*Emax
+        Q2 = 2 * self.Mt * Eprop
  
-            ## Get the probability
-            Pprop = (vec_mag
-                         * self.astro_model.velocity.f(vprop)
-                         * self.interaction.form_factor.ff2(Q2))
+        ## Get the probability
+        Pprop = (vec_mag
+                     * self.astro_model.velocity.f(vprop)
+                     * self.interaction.form_factor.ff2(Q2))
 
-           
-            if Pprop <= 0:
-                continue # Don't need to waste time
-            # Get the acceptance function:
-            alpha = min(1,Pprop / self.lastP)
-            # Throw a random number
-            if alpha <= self._rand.rand():
-                continue
-
+        alpha = min(1,Pprop / self.lastP)
+       
+        if Pprop <= 0 or alpha <= self._rand.rand():
+            pass
+        else:
             self.lastv = vprop
             self.lastE = Eprop
+            self.lastEx = Ex
             self.lastP = Pprop
-            break
+            self.Ntries = 0
 
+        # Probabilities don't depend of phi so we'll throw a new phi
+        # no matter what
         phi = self._rand.rand() * 2 * np.pi
-        cosTheta = self.interaction.cross_section.cosThetaLab(Ex,
+        cosTheta = self.interaction.cross_section.cosThetaLab(self.lastEx,
                             self.lastE)
 
         ## Let's go back into the lab frame:

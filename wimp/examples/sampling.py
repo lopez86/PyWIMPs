@@ -104,9 +104,8 @@ Returns:
     f.FixParameter(2,np.sqrt(am.velocity.vE.dot(am.velocity.vE)))
     f.FixParameter(3,am.velocity.v0)
     f.SetParameter(0,1)   
-    print("Uniform Throws")
-
     N = 200000
+    print("Uniform Throws")
     start = time.process_time()
     for i in range(N):
         s = unif.sample()
@@ -144,9 +143,9 @@ Returns:
     h2.Scale(1./N)
     h3.Scale(h2.Integral()/h3.Integral())
     h4.Scale(h2.Integral()/h4.Integral())
-#    h1.Scale(1./h1.GetBinContent(1))
-#    h2.Scale(1./h2.GetBinContent(1))
-#    h3.Scale(1./h3.GetBinContent(1))
+    h1.Scale(1./h1.GetBinContent(1))
+    h2.Scale(1./h2.GetBinContent(1))
+    h3.Scale(1./h3.GetBinContent(1))
 
     h1.SetLineColor(kRed)
     h2.SetLineColor(kBlue)

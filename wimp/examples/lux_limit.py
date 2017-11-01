@@ -31,6 +31,10 @@ __date__ = 'June 2017'
 __copyright__ = '(c) 2017, Jeremy P. Lopez'
 
 
+import numpy as np
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+
 from ..det.Experiment import Experiment
 from ..xsec.HelmFormFactor import HelmFormFactor
 from ..det.Efficiency import Efficiency
@@ -41,20 +45,17 @@ from ..xsec.InteractionModel import InteractionModel
 from ..xsec.SINormalization import SINormalization
 from ..xsec.Nucleus import Nucleus
 from .. import units
-import numpy as np
-
-import matplotlib as mpl
-import matplotlib.pyplot as plt
 
 class lux_efficiency(Efficiency):
     """Very approximate empirical formula to fit the rough
        shape of the efficiency curve in their most recent paper
        except for the drop-off in the efficiency above ~50 keVr"""
-    def __init__(self):
+    def __init__(self,emin=1*units.keV):
         self.p = [4.3,2.6,2.7]
+        self.emin = emin;
     def efficiency(self,s):
         Er = s.Er
-        if Er < 1 * units.keV:
+        if Er < self.emin:
             return 0
         Er = Er/units.keV
         # Logistic with a fast turn-on above 0
@@ -65,12 +66,17 @@ class lux_efficiency(Efficiency):
 # shouldn't matter too much for the limits
 
 
-def lux_limits():
+def lux_limits(emin=1*units.keV):
     """ This function actually produces the limit plot.
         It could be made much faster using the
         multiprocessing module.
+
+        Args:
+            emin: Minimum energy threshold
+
     """
     A = 131
+    Z = 54
     pars = {'AtomicNumber':A,
             'XS':1e-40 * units.cm**2,
             'Mt':131*units.amu,
@@ -84,15 +90,15 @@ def lux_limits():
             'Exposure':332 * units.day,
            }
 
-    nucl = Nucleus({'NuclMassNumber':131,
-                    'NuclAtomicNumber':54,
-                    'NuclMass':131*units.amu})
+    nucl = Nucleus({'NuclMassNumber':A,
+                    'NuclAtomicNumber':Z,
+                    'NuclMass':A*units.amu})
     sinorm = SINormalization()
 
     exper = Experiment()
 
     ff = HelmFormFactor()
-    eff = lux_efficiency()
+    eff = lux_efficiency(emin=emin)
 
     exper.detector_model.efficiency = eff
     exper.interaction.form_factor = ff
